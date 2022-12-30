@@ -4,25 +4,32 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>install mysql under mac | Tingting Tao&#39;s Blog</title>
+    <title>Tradeoffs when growing a large scale distributed system | Tingting Tao&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Tingting Tao">
     
 
     
-    <meta name="description" content="Install HomeBrew 1ruby -e &quot;$(curl --insecure -fsSL https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;Homebrew&#x2F;install&#x2F;master&#x2F;install)&quot;  brew install mysql  Start mysql service: mysql.server start  Set pass">
+    <meta name="description" content="A simple load balancerTo start with a very simple point, clients connect to your service through network, a load balancer routing requests to different fleets.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="install mysql under mac">
-<meta property="og:url" content="http://taylortao.github.io/2017/04/22/install-mysql-under-mac/index.html">
+<meta property="og:title" content="Tradeoffs when growing a large scale distributed system">
+<meta property="og:url" content="http://taylortao.github.io/2022/12/29/Tradeoffs%20when%20growing%20a%20large%20scale%20distributed%20system/index.html">
 <meta property="og:site_name" content="Tingting Tao&#39;s Blog">
-<meta property="og:description" content="Install HomeBrew 1ruby -e &quot;$(curl --insecure -fsSL https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;Homebrew&#x2F;install&#x2F;master&#x2F;install)&quot;  brew install mysql  Start mysql service: mysql.server start  Set pass">
+<meta property="og:description" content="A simple load balancerTo start with a very simple point, clients connect to your service through network, a load balancer routing requests to different fleets.">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2017-04-23T01:47:02.000Z">
-<meta property="article:modified_time" content="2022-12-30T00:35:16.680Z">
+<meta property="og:image" content="http://taylortao.github.io/2022/12/29/Tradeoffs%20when%20growing%20a%20large%20scale%20distributed%20system/loadbalancerexample.png">
+<meta property="og:image" content="http://taylortao.github.io/2022/12/29/Tradeoffs%20when%20growing%20a%20large%20scale%20distributed%20system/singletenant.png">
+<meta property="og:image" content="http://taylortao.github.io/2022/12/29/Tradeoffs%20when%20growing%20a%20large%20scale%20distributed%20system/multitenant.png">
+<meta property="og:image" content="http://taylortao.github.io/2022/12/29/Tradeoffs%20when%20growing%20a%20large%20scale%20distributed%20system/shufflesharding.png">
+<meta property="og:image" content="http://taylortao.github.io/2022/12/29/Tradeoffs%20when%20growing%20a%20large%20scale%20distributed%20system/cpunlimitedgrowth.png">
+<meta property="og:image" content="http://taylortao.github.io/2022/12/29/Tradeoffs%20when%20growing%20a%20large%20scale%20distributed%20system/migratewhale.png">
+<meta property="article:published_time" content="2022-12-29T23:18:00.000Z">
+<meta property="article:modified_time" content="2022-12-30T06:07:04.192Z">
 <meta property="article:author" content="Tingting Tao">
-<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="SystemDesign">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://taylortao.github.io/2022/12/29/Tradeoffs%20when%20growing%20a%20large%20scale%20distributed%20system/loadbalancerexample.png">
 
     
     <link rel="alternative" href="/atom.xml" title="Tingting Tao&#39;s Blog" type="application/atom+xml">
@@ -80,32 +87,65 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/04/22/install-mysql-under-mac/" title="install mysql under mac" itemprop="url">install mysql under mac</a>
+      <a href="/2022/12/29/Tradeoffs when growing a large scale distributed system/" title="Tradeoffs when growing a large scale distributed system" itemprop="url">Tradeoffs when growing a large scale distributed system</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Tingting Tao" target="_blank" itemprop="author">Tingting Tao</a>
 		
   <p class="article-time">
-    <time datetime="2017-04-23T01:47:02.000Z" itemprop="datePublished"> Published 2017-04-22</time>
+    <time datetime="2022-12-29T23:18:00.000Z" itemprop="datePublished"> Published 2022-12-29</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
-		<ol>
-<li><p>Install HomeBrew</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby -e &quot;$(curl --insecure -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code>brew install mysql</code></p>
-</li>
-<li><p>Start mysql service: <code>mysql.server start</code></p>
-</li>
-<li><p>Set password: <code>mysql_secure_installation</code></p>
-</li>
-<li><p>Login: <code>mysql -u root -p</code></p>
-</li>
-</ol>
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#A-simple-load-balancer"><span class="toc-number">1.</span> <span class="toc-text">A simple load balancer</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Single-tenant-LB"><span class="toc-number">2.</span> <span class="toc-text">Single tenant LB</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Multi-tenant-LB"><span class="toc-number">3.</span> <span class="toc-text">Multi tenant LB</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-the-trade-off"><span class="toc-number">3.1.</span> <span class="toc-text">What is the trade-off?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#To-solve-isolation-issue-shuffle-sharding"><span class="toc-number">3.2.</span> <span class="toc-text">To solve isolation issue: shuffle sharding</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Scaling-unbounded-growth-is-hard"><span class="toc-number">4.</span> <span class="toc-text">Scaling: unbounded growth is hard</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Cells-are-the-answer"><span class="toc-number">4.1.</span> <span class="toc-text">Cells are the answer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#preset-cell-size"><span class="toc-number">4.2.</span> <span class="toc-text">preset cell size</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#data-plane-scaling-factors"><span class="toc-number">4.3.</span> <span class="toc-text">data plane scaling factors</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h1 id="A-simple-load-balancer"><a href="#A-simple-load-balancer" class="headerlink" title="A simple load balancer"></a>A simple load balancer</h1><p>To start with a very simple point, clients connect to your service through network, a load balancer routing requests to different fleets.</p>
+<span id="more"></span>
+
+<p><img src="loadbalancerexample.png" alt="load balancer example"></p>
+<h1 id="Single-tenant-LB"><a href="#Single-tenant-LB" class="headerlink" title="Single tenant LB"></a>Single tenant LB</h1><p>Starting from a single tenant load balancer, what that means is for every customer which has load balancer, there is a ENI created in their VPC and cross attached to the server in service provider’s network. normally there will be another standby instance for redundancy.<br>In this case, customers can send various type of traffic to our LB, which means we need to scale up&#x2F;out our capacity, which could be done vertically by adding large instance type or horizontally by adding more instances.<br>This created churns for customers since every time we scale up or out, we need to update DNS and customers could cache DNS, staffs like that.<br>The drawbacks are: it just cannot keep scaling, utilization might be low, deployments take time.</p>
+<p><img src="singletenant.png" alt="single tenant"></p>
+<h1 id="Multi-tenant-LB"><a href="#Multi-tenant-LB" class="headerlink" title="Multi tenant LB"></a>Multi tenant LB</h1><p>Compare with single tenant system, multi tenant system provides better utilization, faster deployments(more agile) also larger buffer capacity to absord traffic, since it is shared by a set of customers. </p>
+<p><img src="multitenant.png" alt="multi tenant"></p>
+<h2 id="What-is-the-trade-off"><a href="#What-is-the-trade-off" class="headerlink" title="What is the trade-off?"></a>What is the trade-off?</h2><p>Noisy neighbors issue: a single customer is having a bad day cause impact to other customers<br>Even with sharding technology, it would still impact customers on the same shard. </p>
+<p>While for single tenant system, it has best isolation, and smallest blast radius.</p>
+<h2 id="To-solve-isolation-issue-shuffle-sharding"><a href="#To-solve-isolation-issue-shuffle-sharding" class="headerlink" title="To solve isolation issue: shuffle sharding"></a>To solve isolation issue: shuffle sharding</h2><p>As below graph, when customer B has a bad day, they will likely bring down instance 1,3,6 while other instances remain intact. customer A, C, D still could be mapped to a good instance.<br><img src="shufflesharding.png" alt="shuffle sharding"></p>
+<p>Possibility of overlap could be decided by below 3 factors:</p>
+<ul>
+<li>number of nodes&#x2F;number of instances</li>
+<li>number of shards</li>
+<li>number of customers</li>
+</ul>
+<p>This would be a trade-off between isolation VS capacity.</p>
+<h1 id="Scaling-unbounded-growth-is-hard"><a href="#Scaling-unbounded-growth-is-hard" class="headerlink" title="Scaling: unbounded growth is hard"></a>Scaling: unbounded growth is hard</h1><p>Even data plane is more distributed, but we still have only single control plane that governs each region. </p>
+<p>For big region, it is impossible to test. other than that, this becomes an edge case to our dependencies, and which could hit dependency system’s unknown scaling limit. </p>
+<p>Best practice: don’t be an outlier &#x2F; big pain to dependency, since we don’t know when it will hit dependency’s limit.</p>
+<p><img src="cpunlimitedgrowth.png" alt="control plane unlimited growth"></p>
+<h2 id="Cells-are-the-answer"><a href="#Cells-are-the-answer" class="headerlink" title="Cells are the answer"></a>Cells are the answer</h2><p>Within a single cell, both control plane and data plane scaling limit would be bounded in this case, so we know we are approaching failure.</p>
+<p>Each instance has some buffered capacity for new customers.</p>
+<p>Then in this case, whales become a big problem. whales are customers either have large config or high traffic, it could fall into any extreme case. </p>
+<p>We have no way to know a whale when creation, there is no indicators.</p>
+<p>When whales appears, they could soaked up lots of buffered capacity so quickly that cell is approach to its limit.</p>
+<p>In this case, we could automatically migrate whales to isolated capacity to protect other customers.</p>
+<p><img src="migratewhale.png" alt="migratewhale"></p>
+<p>This is a trade-off between complexity VS flexibility.<br>Cell architecture is complex however it provides some flexibility when growing. </p>
+<h2 id="preset-cell-size"><a href="#preset-cell-size" class="headerlink" title="preset cell size"></a>preset cell size</h2><p>Using flexible cell size will be more friendly to cost, while costy to test. </p>
+<p>By having multiple cell sizes, it will reduce the overall cost and increase the complexity to test, a trade-off between cost VS testability.</p>
+<h2 id="data-plane-scaling-factors"><a href="#data-plane-scaling-factors" class="headerlink" title="data plane scaling factors"></a>data plane scaling factors</h2><p>Likely the scaling event of data plane will be: </p>
+<ul>
+<li>new connections per second</li>
+<li>active connections</li>
+<li>bandwidth.</li>
+</ul>
+<p>By having fewer instances, we will save some cost however will increase blast radius of event and have poorer isolation.<br>This is a trade-off between cost VS blast radius.</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -119,7 +159,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/MySQL/">MySQL</a>
+  <span></span> <a href="/tags/SystemDesign/">SystemDesign</a>
   </div>
 
 </div>
@@ -128,7 +168,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://taylortao.github.io/2017/04/22/install-mysql-under-mac/" data-title="install mysql under mac | Tingting Tao&#39;s Blog" data-tsina="" class="share clearfix">
+	  <div data-url="http://taylortao.github.io/2022/12/29/Tradeoffs%20when%20growing%20a%20large%20scale%20distributed%20system/" data-title="Tradeoffs when growing a large scale distributed system | Tingting Tao&#39;s Blog" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -141,19 +181,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2017/04/24/mysql-problems-in-leetcode/" title="mysql problems in leetcode">
-  <strong>Previous: </strong><br/>
-  <span>
-  mysql problems in leetcode</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2017/04/20/The-first-day-to-try-Scala/"  title="The first day to try Scala and Play framework">
+<a href="/2022/07/25/Cache 101/"  title="Cache 101">
  <strong>Next: </strong><br/> 
- <span>The first day to try Scala and Play framework
+ <span>Cache 101
 </span>
 </a>
 </div>
@@ -167,6 +199,13 @@
 
 </div>  
       <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#A-simple-load-balancer"><span class="toc-number">1.</span> <span class="toc-text">A simple load balancer</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Single-tenant-LB"><span class="toc-number">2.</span> <span class="toc-text">Single tenant LB</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Multi-tenant-LB"><span class="toc-number">3.</span> <span class="toc-text">Multi tenant LB</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-the-trade-off"><span class="toc-number">3.1.</span> <span class="toc-text">What is the trade-off?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#To-solve-isolation-issue-shuffle-sharding"><span class="toc-number">3.2.</span> <span class="toc-text">To solve isolation issue: shuffle sharding</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Scaling-unbounded-growth-is-hard"><span class="toc-number">4.</span> <span class="toc-text">Scaling: unbounded growth is hard</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Cells-are-the-answer"><span class="toc-number">4.1.</span> <span class="toc-text">Cells are the answer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#preset-cell-size"><span class="toc-number">4.2.</span> <span class="toc-text">preset cell size</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#data-plane-scaling-factors"><span class="toc-number">4.3.</span> <span class="toc-text">data plane scaling factors</span></a></li></ol></li></ol>
+ 
+  </div>
 
 <div id="asidepart">
 <div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
@@ -376,6 +415,8 @@ $(document).ready(function(){
       m.removeClass('moveMain');
       a.css('display', 'block').removeClass('fadeOut');
       o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
         
     }
   });

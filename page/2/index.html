@@ -79,6 +79,78 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2017/04/22/install-mysql-under-mac/" title="install mysql under mac" itemprop="url">install mysql under mac</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tingting Tao" target="_blank" itemprop="author">Tingting Tao</a>
+		
+  <p class="article-time">
+    <time datetime="2017-04-23T01:47:02.000Z" itemprop="datePublished"> Published 2017-04-22</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <ol>
+<li><p>Install HomeBrew</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby -e &quot;$(curl --insecure -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>brew install mysql</code></p>
+</li>
+<li><p>Start mysql service: <code>mysql.server start</code></p>
+</li>
+<li><p>Set password: <code>mysql_secure_installation</code></p>
+</li>
+<li><p>Login: <code>mysql -u root -p</code></p>
+</li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="../../categories/IT-Technology/">IT Technology</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/MySQL/">MySQL</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2017/04/20/The-first-day-to-try-Scala/" title="The first day to try Scala and Play framework" itemprop="url">The first day to try Scala and Play framework</a>
   </h1>
   <p class="article-author">By
@@ -698,70 +770,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2013/11/14/双向扫描/" title="双向扫描 2 way traverse" itemprop="url">双向扫描 2 way traverse</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Tingting Tao" target="_blank" itemprop="author">Tingting Tao</a>
-		
-  <p class="article-time">
-    <time datetime="2013-11-14T16:18:00.000Z" itemprop="datePublished"> Published 2013-11-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>当求一个数列的尖峰值，或者跟尖峰值相关的问题时，常常需要用到双向扫描的做法。</p>
-<p>例如 LeetCode 105 Candy</p>
-<p>There are N children standing in a line. Each child is assigned a rating value.<br>You are giving candies to these children subjected to the following requirements:<br>(1) Each child must have at least one candy.<br>(2) Children with a higher rating get more candies than their neighbors.<br>What is the minimum candies you must give?</p>
-<p>解法： 首先正向扫描，算出需要满足只看左边所需要的最少糖果的分配方案。<br>再反向扫描，算出满足只看右边所需要的最少糖果的分配方案。<br>然后分别对每一项求出两者之间的较大值。<br>可以优化为：反向扫描的时候，如果不满足高分小孩拿到比右边小孩更多糖果这个条件，再对值进行修正。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="../../2013/11/14/%E5%8F%8C%E5%90%91%E6%89%AB%E6%8F%8F/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="../../categories/IT-Technology/">IT Technology</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/Algorithm/">Algorithm</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="../../">Prev</a><a class="page-number" href="../../">1</a><span class="page-number current">2</span><a class="page-number" href="../3/">3</a><a class="page-number" href="../4/">4</a><a class="extend next" rel="next" href="../3/">Next</a>
@@ -781,7 +789,7 @@
 		<ul>
 		
 		  
-			<li><a href="/categories/IT-Technology/" title="IT Technology">IT Technology<sup>38</sup></a></li>
+			<li><a href="/categories/IT-Technology/" title="IT Technology">IT Technology<sup>39</sup></a></li>
 		  
 		
 		</ul>
@@ -798,11 +806,11 @@
 			
 		
 			
-				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>5</sup></a></li>
+				<li><a href="/tags/SystemDesign/" title="SystemDesign">SystemDesign<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/SystemDesign/" title="SystemDesign">SystemDesign<sup>3</sup></a></li>
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>5</sup></a></li>
 			
 		
 			
@@ -862,15 +870,15 @@
 			
 		
 			
-				<li><a href="/tags/System-design/" title="System design">System design<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/Blog/" title="Blog">Blog<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/Career/" title="Career">Career<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
 			
 		
 		</ul>
