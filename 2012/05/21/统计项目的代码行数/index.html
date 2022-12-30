@@ -40,7 +40,7 @@
     <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
     
     
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 
 <meta name="generator" content="Hexo 6.3.0"></head>
 
@@ -111,14 +111,14 @@
 <span id="more"></span>
 
 <p>假设文件夹结构如图:</p>
-<p><img src="foldersample.png" alt="folder sample"></p>
+<p><img src="/2012/05/21/%E7%BB%9F%E8%AE%A1%E9%A1%B9%E7%9B%AE%E7%9A%84%E4%BB%A3%E7%A0%81%E8%A1%8C%E6%95%B0/foldersample.png" alt="folder sample"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span>(__name__==<span class="string">&#x27;__main__&#x27;</span>):  </span><br><span class="line">    <span class="keyword">for</span> root,dirs,files <span class="keyword">in</span> os.walk(<span class="string">&#x27;A&#x27;</span>):  </span><br><span class="line">        <span class="built_in">print</span> (root, dirs, files)  </span><br><span class="line">[python] view plain copy</span><br><span class="line"><span class="keyword">import</span> os  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span>(__name__==<span class="string">&#x27;__main__&#x27;</span>):  </span><br><span class="line">    <span class="keyword">for</span> root,dirs,files <span class="keyword">in</span> os.walk(<span class="string">&#x27;A&#x27;</span>):  </span><br><span class="line">        <span class="built_in">print</span> (root, dirs, files)  </span><br></pre></td></tr></table></figure>
 <p>结果为：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">E:\technology\python\code&gt;python listfile.py  </span><br><span class="line">A [&#x27;B&#x27;, &#x27;D&#x27;] []  </span><br><span class="line">A\B [&#x27;C&#x27;] []  </span><br><span class="line">A\B\C [] []  </span><br><span class="line">A\D [] []  </span><br></pre></td></tr></table></figure>
 
 <p>可以看出，这个函数就可以实现文件目录树的递归遍历了。</p>
 <p>怎么实现文件目录树的有选择的遍历呢？</p>
-<p><img src="foldersample2.png" alt="folder sample 2"></p>
+<p><img src="/2012/05/21/%E7%BB%9F%E8%AE%A1%E9%A1%B9%E7%9B%AE%E7%9A%84%E4%BB%A3%E7%A0%81%E8%A1%8C%E6%95%B0/foldersample2.png" alt="folder sample 2"></p>
 <p>红叉的文件表示不需要遍历的文件</p>
 <p>运行下面代码可以列出所有文件名：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span>(__name__==<span class="string">&#x27;__main__&#x27;</span>):  </span><br><span class="line">    <span class="keyword">for</span> root,dirs,files <span class="keyword">in</span> os.walk(<span class="string">&#x27;A&#x27;</span>):  </span><br><span class="line">        <span class="keyword">for</span> afile <span class="keyword">in</span> files:  </span><br><span class="line">            <span class="built_in">print</span> (root + os.sep + afile)  </span><br></pre></td></tr></table></figure>
@@ -144,12 +144,12 @@
 <p>把输出重定向到文件，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">E:\technology\python\code&gt;python listfile.py &gt; allfiles.txt  </span><br></pre></td></tr></table></figure>
 <p>看一看，基本上剩下的文件都是我自己写的了。</p>
-<p><img src="allfiles.png" alt="all files"></p>
+<p><img src="/2012/05/21/%E7%BB%9F%E8%AE%A1%E9%A1%B9%E7%9B%AE%E7%9A%84%E4%BB%A3%E7%A0%81%E8%A1%8C%E6%95%B0/allfiles.png" alt="all files"></p>
 <p>最后，把两部分代码融合起来就可以统计总的代码行以及不含空行的代码行和统计代码文件个数啦。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys,os  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">afileline</span>(<span class="params">f_path</span>):  </span><br><span class="line">    res=<span class="number">0</span>  </span><br><span class="line">    f=<span class="built_in">open</span>(f_path,<span class="string">&quot;r&quot;</span>,<span class="number">1</span>,<span class="string">&quot;utf8&quot;</span>)  </span><br><span class="line">    <span class="keyword">for</span> lines <span class="keyword">in</span> f:  </span><br><span class="line">        <span class="keyword">if</span>(lines.split()):  </span><br><span class="line">            res+=<span class="number">1</span>  </span><br><span class="line">    <span class="keyword">return</span> res  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span>(__name__==<span class="string">&#x27;__main__&#x27;</span>):  </span><br><span class="line">    host=<span class="string">&#x27;C:&#x27;</span>+os.sep+<span class="string">&#x27;wamp&#x27;</span>+os.sep+<span class="string">&#x27;www&#x27;</span>+os.sep+<span class="string">&#x27;mydms&#x27;</span>  </span><br><span class="line">    allline=<span class="number">0</span>  </span><br><span class="line">    allfiles=<span class="number">0</span>  </span><br><span class="line">    <span class="keyword">for</span> root,dirs,files <span class="keyword">in</span> os.walk(host):  </span><br><span class="line">        <span class="keyword">if</span>(root.startswith(host+os.sep+<span class="string">&#x27;adodb5&#x27;</span>)):  </span><br><span class="line">            <span class="keyword">continue</span>  </span><br><span class="line">        <span class="keyword">if</span>(root.startswith(host+os.sep+<span class="string">&#x27;core\PHPExcel&#x27;</span>)):  </span><br><span class="line">            <span class="keyword">continue</span>  </span><br><span class="line">        <span class="keyword">if</span>(root.startswith(host+os.sep+<span class="string">&#x27;ext\editor&#x27;</span>)):  </span><br><span class="line">            <span class="keyword">continue</span>  </span><br><span class="line">        <span class="keyword">for</span> afile <span class="keyword">in</span> files:  </span><br><span class="line">            <span class="keyword">if</span>(afile <span class="keyword">in</span> [<span class="string">&#x27;PHPExcel.php&#x27;</span>, <span class="string">&#x27;jquery-1.5.2.js&#x27;</span>, <span class="string">&#x27;jquery-ui.js&#x27;</span>,<span class="string">&#x27;jquery-ui.css&#x27;</span>,<span class="string">&#x27;timer.js&#x27;</span>]):  </span><br><span class="line">                <span class="keyword">continue</span>  </span><br><span class="line">            ext=afile.split(<span class="string">&#x27;.&#x27;</span>)  </span><br><span class="line">            ext=ext[-<span class="number">1</span>]  </span><br><span class="line">            <span class="keyword">if</span>(ext <span class="keyword">in</span> [<span class="string">&#x27;php&#x27;</span>,<span class="string">&#x27;css&#x27;</span>,<span class="string">&#x27;js&#x27;</span>,<span class="string">&#x27;html&#x27;</span>]):  </span><br><span class="line">                itpath=root+os.sep+afile  </span><br><span class="line">                allfiles+=<span class="number">1</span>  </span><br><span class="line">                allline+=afileline(itpath)  </span><br><span class="line">    <span class="built_in">print</span> (<span class="string">&#x27;Total lines:&#x27;</span>,allline)  </span><br><span class="line">    <span class="built_in">print</span> (<span class="string">&#x27;Total: &#x27;</span>,allfiles)  </span><br></pre></td></tr></table></figure>
 
 <p>呵呵，终于知道了，我做的小项目有1万4千行代码(除去空行)，呵呵。</p>
-<p><img src="result.png" alt="result"></p>
+<p><img src="/2012/05/21/%E7%BB%9F%E8%AE%A1%E9%A1%B9%E7%9B%AE%E7%9A%84%E4%BB%A3%E7%A0%81%E8%A1%8C%E6%95%B0/result.png" alt="result"></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -157,7 +157,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="../../../../categories/IT-Technology/">IT Technology</a>
+  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
 </div>
 
 
@@ -287,11 +287,11 @@
 			
 		
 			
-				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
+				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
 			
 		
 			
@@ -307,11 +307,11 @@
 			
 		
 			
-				<li><a href="/tags/Career/" title="Career">Career<sup>1</sup></a></li>
+				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
+				<li><a href="/tags/Play/" title="Play">Play<sup>1</sup></a></li>
 			
 		
 		</ul>

@@ -37,7 +37,7 @@
     <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
     
     
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 
 <meta name="generator" content="Hexo 6.3.0"></head>
 
@@ -104,7 +104,7 @@
 <span id="more"></span>
 
 <p>伪代码：</p>
-<p><img src="algorithm.gif" alt="algorithm"></p>
+<p><img src="/2011/12/23/%E4%BD%BF%E7%94%A8%E4%BD%8D%E8%BF%90%E7%AE%97%E5%AE%9E%E7%8E%B0%E4%B9%98%E6%B3%95%E5%92%8C%E4%B9%98%E6%96%B9%E8%BF%90%E7%AE%97/algorithm.gif" alt="algorithm"></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment"> * 输入：正整数v mod m 和 g mod m  </span></span><br><span class="line"><span class="comment"> * 输出：g^v mod m  </span></span><br><span class="line"><span class="comment"> */</span>  </span><br><span class="line">__int64 <span class="title function_">gvmm</span><span class="params">(__int64 g, __int64 v, __int64 m)</span>&#123;  </span><br><span class="line">    <span class="type">int</span> w = (<span class="type">int</span>)<span class="built_in">floor</span>(<span class="built_in">log</span>(v) / <span class="built_in">log</span>(<span class="number">2</span>)) - <span class="number">1</span>;  </span><br><span class="line">    __int64 e = <span class="number">1</span> &lt;&lt; w;  </span><br><span class="line">    __int64 x = g;  </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;=w; i++)&#123;  </span><br><span class="line">        x = (x * x) % m;  </span><br><span class="line">        <span class="keyword">if</span>(v &amp; e)&#123;  </span><br><span class="line">             x = (g * x) % m;  </span><br><span class="line">        &#125;  </span><br><span class="line">        e &gt;&gt;= <span class="number">1</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">return</span> x;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
 
 <p>乘方的测试：<br>使用普通算法和位运算算法比较。</p>
@@ -118,7 +118,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="../../../../categories/IT-Technology/">IT Technology</a>
+  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
 </div>
 
 
@@ -248,11 +248,11 @@
 			
 		
 			
-				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
+				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
 			
 		
 			
@@ -268,11 +268,11 @@
 			
 		
 			
-				<li><a href="/tags/Career/" title="Career">Career<sup>1</sup></a></li>
+				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
+				<li><a href="/tags/Play/" title="Play">Play<sup>1</sup></a></li>
 			
 		
 		</ul>

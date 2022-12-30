@@ -39,7 +39,7 @@
     <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
     
     
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 
 <meta name="generator" content="Hexo 6.3.0"></head>
 
@@ -107,7 +107,7 @@
 		<h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>一种杯子，若在第N层被摔破，则在任何比N高的楼层均会破，若在第M层不破，则在任何比M低的楼层均不会破，给你<strong>两个</strong>这样的杯子，让你在100层高的楼层中测试，要求用最少的测试次数找出恰巧会使杯子破碎的楼层。</p>
 <span id="more"></span>
 
-<p><img src="problem.gif" alt="problem: which floor to choose?"></p>
+<p><img src="/2011/12/22/%E5%BE%AE%E8%BD%AF%E7%9A%84%E6%89%94%E6%9D%AF%E5%AD%90%E9%97%AE%E9%A2%98-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/problem.gif" alt="problem: which floor to choose?"></p>
 <h3 id="不等式解法"><a href="#不等式解法" class="headerlink" title="不等式解法"></a>不等式解法</h3><p>所有讨论基于2个杯子的情况：<br>下图中所有图示的红线均表示剩下两个杯子的时候的试摔位置，当杯子破碎后，也就是只剩下一个杯子的时候，只需要从已知范围的最底层向已知范围的最高层逐层试摔。</p>
 <blockquote>
 <ul>
@@ -118,7 +118,7 @@
 <li>当需要五层时候，首先讨论是否可以通过小于等于三次试摔完成，如果不行则讨论最多四次试摔的情况。依次类推，如下图：</li>
 </ul>
 </blockquote>
-<p><img src="solution1.gif" alt="demo: how to solve it"></p>
+<p><img src="/2011/12/22/%E5%BE%AE%E8%BD%AF%E7%9A%84%E6%89%94%E6%9D%AF%E5%AD%90%E9%97%AE%E9%A2%98-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/solution1.gif" alt="demo: how to solve it"></p>
 <p>因此，当有100层的时候，最多需要n次试摔，使得</p>
 <p>$$ {n+(n-1)+(n-2)+…+1 &gt;&#x3D; 100} \tag{1} $$</p>
 <p>然后对n上取整，因此n&#x3D;14。最差情况需要14次试摔。</p>
@@ -136,7 +136,7 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//dp.c  </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span>  </span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LAYER 101  </span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CUP 3  </span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;  </span><br><span class="line">    <span class="type">int</span> dp[LAYER][CUP], route[LAYER][CUP], i, j, k;  </span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>; i&lt;LAYER; i++)&#123;  </span><br><span class="line">        dp[i][<span class="number">1</span>] = i;   </span><br><span class="line">        dp[i][<span class="number">0</span>] = <span class="number">0</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>; i&lt;CUP; i++)&#123;   </span><br><span class="line">        dp[<span class="number">1</span>][i] = <span class="number">1</span>;  </span><br><span class="line">        route[<span class="number">1</span>][i] = <span class="number">0</span>;  </span><br><span class="line">        dp[<span class="number">0</span>][i] = <span class="number">0</span>;  </span><br><span class="line">    &#125;   </span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">2</span>; i&lt;CUP; i++)  </span><br><span class="line">        <span class="keyword">for</span>(j=<span class="number">2</span>; j&lt;LAYER; j++)&#123;  </span><br><span class="line">            dp[j][i] = j;  </span><br><span class="line">            route[j][i] = <span class="number">0</span>;  </span><br><span class="line">            <span class="keyword">for</span>(k=<span class="number">1</span>; k&lt;j; k++)&#123;  </span><br><span class="line">                <span class="type">int</span> min = dp[k<span class="number">-1</span>][i<span class="number">-1</span>] &gt; dp[j-k][i]? dp[k<span class="number">-1</span>][i<span class="number">-1</span>]+<span class="number">1</span>: dp[j-k][i]+<span class="number">1</span>;  </span><br><span class="line">                route[j][i] = min &lt;= dp[j][i]? k: route[j][i];  </span><br><span class="line">                dp[j][i] = min &lt; dp[j][i]? min: dp[j][i];  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;MIN STEP IS %d\n&quot;</span>, dp[LAYER<span class="number">-1</span>][CUP<span class="number">-1</span>]);  </span><br><span class="line">    <span class="comment">//for(i=1; i&lt;LAYER; i++)&#123;for(j=2; j&lt;CUP; j++)&#123;printf(&quot;%d\t&quot;, route[i][j]);&#125; printf(&quot;\n&quot;);&#125;  </span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
 
 <p>输出结果为：MIN STEP IS 14。也就是，有一种方法，最多需要试摔14次。同时route数组打印出了方法。<br>比如route数组的结果：</p>
-<p><img src="solution2.gif" alt="demo: how to solve it"></p>
+<p><img src="/2011/12/22/%E5%BE%AE%E8%BD%AF%E7%9A%84%E6%89%94%E6%9D%AF%E5%AD%90%E9%97%AE%E9%A2%98-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/solution2.gif" alt="demo: how to solve it"></p>
 <p>因此，route[100][2]&#x3D;14，第一次试摔是在14层，如果碎了，那么从第一层开始往14层试摔，如果没碎，第二次试摔是在route[100-14][2]&#x3D;route[86][2]&#x3D;13，也就是在14+13&#x3D;27层进行第二次试摔，如果这次碎了，那么从第14+1&#x3D;15层开始向上试摔，如果这次没碎，第三次试摔是在route[86-13][2]&#x3D;route[73][2]&#x3D;12，也就是在27+12&#x3D;39层开始试摔，依次类推。</p>
   
 	</div>
@@ -145,7 +145,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="../../../../categories/IT-Technology/">IT Technology</a>
+  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
 </div>
 
 
@@ -282,11 +282,11 @@
 			
 		
 			
-				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
+				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
 			
 		
 			
@@ -302,11 +302,11 @@
 			
 		
 			
-				<li><a href="/tags/Career/" title="Career">Career<sup>1</sup></a></li>
+				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
+				<li><a href="/tags/Play/" title="Play">Play<sup>1</sup></a></li>
 			
 		
 		</ul>

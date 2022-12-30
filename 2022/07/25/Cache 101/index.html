@@ -38,7 +38,7 @@
     <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
     
     
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 
 <meta name="generator" content="Hexo 6.3.0"></head>
 
@@ -115,11 +115,11 @@
 <h3 id="Inline-vs-cache-aside"><a href="#Inline-vs-cache-aside" class="headerlink" title="Inline vs. cache aside"></a>Inline vs. cache aside</h3><p>Inline caches, embeded cache management into the main data access api.<br>Cache aside(or side caches), client code acts as transaction manager and manipulates the cache before or after calls to the data source. </p>
 <h3 id="Different-type-of-caches"><a href="#Different-type-of-caches" class="headerlink" title="Different type of caches"></a>Different type of caches</h3><h4 id="Read-through-vs-Refresh-ahead"><a href="#Read-through-vs-Refresh-ahead" class="headerlink" title="Read-through vs. Refresh-ahead"></a>Read-through vs. Refresh-ahead</h4><p>Read-through: application for a cache miss, then querying the database, populating the cache, and continuing application processing. In this case, application is resilient to cache failures with performance penalty.</p>
 <p>Refresh-ahead: application automatically and asynchronously reload recently accessed cache entry before its expiration. The asynchronous refresh is triggered when an object that is sufficiently close to its expiration time.</p>
-<p><img src="readcache.png" alt="read cache"></p>
+<p><img src="/2022/07/25/Cache%20101/readcache.png" alt="read cache"></p>
 <h4 id="Write-through-write-behind-vs-write-around"><a href="#Write-through-write-behind-vs-write-around" class="headerlink" title="Write-through, write-behind vs. write-around"></a>Write-through, write-behind vs. write-around</h4><p>Write-through: when the application updates data in the cache, the operation will not complete both cache and database have the updated value. which induces extra write latency, however paired with Read-Through, it has better consistency guarantee.</p>
 <p>Write-behind: confirm to client right after write to cache, only write to db after specific intervals or certain conditions met. it will have data loss in case of crash.</p>
 <p>Write-around: write to db directly.</p>
-<p><img src="writecache.png" alt="write cache"></p>
+<p><img src="/2022/07/25/Cache%20101/writecache.png" alt="write cache"></p>
 <h3 id="Cache-expiration"><a href="#Cache-expiration" class="headerlink" title="Cache expiration"></a>Cache expiration</h3><p>There are multiple ways of cache expiration</p>
 <p>(0) TTL based.<br>(1) Fifo<br>(2) Lifo<br>(3) LRU: least recently used.<br>(4) MRU: most recently used.<br>(5) LFU: least frequently used.<br>(6) RR: random replacement.</p>
 <p>Real-world traffic patterns can differ from what modeled so it is important to track the actual performance of cache. For example, by emitting metrics on cache hits and misses, total cache size and number of requests to downstream services.</p>
@@ -136,7 +136,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="../../../../categories/IT-Technology/">IT Technology</a>
+  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
 </div>
 
 
@@ -273,11 +273,11 @@
 			
 		
 			
-				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
+				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
 			
 		
 			
@@ -293,11 +293,11 @@
 			
 		
 			
-				<li><a href="/tags/Career/" title="Career">Career<sup>1</sup></a></li>
+				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
+				<li><a href="/tags/Play/" title="Play">Play<sup>1</sup></a></li>
 			
 		
 		</ul>

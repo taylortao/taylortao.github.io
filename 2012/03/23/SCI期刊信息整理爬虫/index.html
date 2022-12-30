@@ -40,7 +40,7 @@
     <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
     
     
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 
 <meta name="generator" content="Hexo 6.3.0"></head>
 
@@ -108,8 +108,8 @@
 		<h3 id="1、需求"><a href="#1、需求" class="headerlink" title="1、需求"></a>1、需求</h3><p>按ISSN号进行搜索，整理一个特定期刊列表里的所有期刊的年文章、投稿难易和一审周期等信息。使用PHP脚本编写。<br>网址：<a target="_blank" rel="noopener" href="http://www.medsci.cn/sci/">http://www.medsci.cn/sci/</a></p>
 <span id="more"></span>
 
-<p>（1）按ISSN号搜索<br><img src="searchbyissn.gif" alt="search by ISSN number"></p>
-<p>（2）得到结果，以及需要提取的部分<br><img src="searchresult.gif" alt="search result"></p>
+<p>（1）按ISSN号搜索<br><img src="/2012/03/23/SCI%E6%9C%9F%E5%88%8A%E4%BF%A1%E6%81%AF%E6%95%B4%E7%90%86%E7%88%AC%E8%99%AB/searchbyissn.gif" alt="search by ISSN number"></p>
+<p>（2）得到结果，以及需要提取的部分<br><img src="/2012/03/23/SCI%E6%9C%9F%E5%88%8A%E4%BF%A1%E6%81%AF%E6%95%B4%E7%90%86%E7%88%AC%E8%99%AB/searchresult.gif" alt="search result"></p>
 <h3 id="2、分析问题"><a href="#2、分析问题" class="headerlink" title="2、分析问题"></a>2、分析问题</h3><p>** 三个步骤： **<br>（1）使用网络蜘蛛从 <a target="_blank" rel="noopener" href="http://www.medsci.cn/sci/">http://www.medsci.cn/sci/</a> 网站抓取信息，模拟输入要搜索的ISSN号，提交表单，获得查询结果的页面。<br>（2）使用正则表达式搜索结果页面，分析页面代码结构，把需要的信息提取出来。<br>（3）输出到文件，因为此输出文件无需考虑单元格的排版，为了简便，直接输出为XML的逗号表达式格式。这种格式可以使用Excel直接打开。</p>
 <p>** 选用的类库： **</p>
 <blockquote>
@@ -134,8 +134,8 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line"><span class="comment">//header(&quot;Content-Type:text/html; charset=utf-8&quot;);  </span></span><br><span class="line"><span class="variable">$gb</span> = <span class="string">&quot;可你跟随那南归的候鸟飞的那么远&quot;</span>;  </span><br><span class="line"><span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/候鸟/&quot;</span>,<span class="variable">$gb</span>, <span class="variable">$match2</span>);  </span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;&quot;</span>;  </span><br><span class="line"><span class="title function_ invoke__">print_r</span>(<span class="variable">$match2</span>);  </span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;/pre&gt;&quot;</span>;  </span><br><span class="line"><span class="meta">?&gt;</span>  </span><br></pre></td></tr></table></figure>
 
 <h3 id="4、使用步骤"><a href="#4、使用步骤" class="headerlink" title="4、使用步骤"></a>4、使用步骤</h3><p>（1）输入格式为：<br>1751-8628,0308-5961,1472-3581,……<br>小技巧：可以通过拷贝Excel的ISSN号序列放到EditPlus中，Ctrl+H快捷键选择正则表达式复选框，把所有的\n替换为，即可。</p>
-<p>（2）运行myspider.php脚本<br><img src="inputofmyspider.gif" alt="input of myspider.php"></p>
-<p>（3）得到结果表格<br><img src="output.gif" alt="output table"></p>
+<p>（2）运行myspider.php脚本<br><img src="/2012/03/23/SCI%E6%9C%9F%E5%88%8A%E4%BF%A1%E6%81%AF%E6%95%B4%E7%90%86%E7%88%AC%E8%99%AB/inputofmyspider.gif" alt="input of myspider.php"></p>
+<p>（3）得到结果表格<br><img src="/2012/03/23/SCI%E6%9C%9F%E5%88%8A%E4%BF%A1%E6%81%AF%E6%95%B4%E7%90%86%E7%88%AC%E8%99%AB/output.gif" alt="output table"></p>
 <h3 id="5、程序源代码下载"><a href="#5、程序源代码下载" class="headerlink" title="5、程序源代码下载"></a>5、程序源代码下载</h3><p>期刊爬虫下载地址: <a target="_blank" rel="noopener" href="http://download.csdn.net/detail/taylor_tao/4166037">http://download.csdn.net/detail/taylor_tao/4166037</a></p>
   
 	</div>
@@ -144,7 +144,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="../../../../categories/IT-Technology/">IT Technology</a>
+  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
 </div>
 
 
@@ -281,11 +281,11 @@
 			
 		
 			
-				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
+				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
 			
 		
 			
@@ -301,11 +301,11 @@
 			
 		
 			
-				<li><a href="/tags/Career/" title="Career">Career<sup>1</sup></a></li>
+				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
+				<li><a href="/tags/Play/" title="Play">Play<sup>1</sup></a></li>
 			
 		
 		</ul>

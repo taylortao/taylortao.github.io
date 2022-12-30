@@ -38,7 +38,7 @@
     <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
     
     
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 
 <meta name="generator" content="Hexo 6.3.0"></head>
 
@@ -110,7 +110,7 @@
 <p>可以证明交易的方法一定是连续的子序列可以得到更优的利润，因为题目有条件不限制交易次数。</p>
 <p>如果不连续比如[1 2 5 3 9] 中的[1 2 5 9],那么一定有[1 2 5]和[3 9]的交易方法优于不连续的子序列[1 2 5 3 9]。</p>
 <p>而且对于一个递增子序列，首尾相减获得的利润差一定为每一段两项的利润差之和。</p>
-<p><img src="example.gif" alt="demo"></p>
+<p><img src="/2014/01/09/%E8%82%A1%E7%A5%A8%E4%B9%B0%E5%8D%96%E9%97%AE%E9%A2%98/example.gif" alt="demo"></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> maxProfit = <span class="keyword">function</span>(<span class="params">prices</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!prices || prices.<span class="property">length</span> === <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">var</span> mp = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">1</span>; i&lt;prices.<span class="property">length</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (prices[i] &gt; prices[i-<span class="number">1</span>])</span><br><span class="line">		&#123;</span><br><span class="line">			mp += prices[i] - prices[i - <span class="number">1</span>];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> mp;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>123：<br>Design an algorithm to find the maximum profit. You may complete at most two transactions.</p>
@@ -138,7 +138,7 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt; l, g;</span><br><span class="line">		l.<span class="built_in">push_back</span>(<span class="number">0</span>);</span><br><span class="line">		g.<span class="built_in">push_back</span>(<span class="number">0</span>);</span><br><span class="line">		<span class="type">int</span> len = prices.<span class="built_in">size</span>();</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;len; i++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="type">int</span> delta = prices[i] - prices[i<span class="number">-1</span>];</span><br><span class="line">			<span class="type">int</span> base = i &gt;= <span class="number">3</span>? <span class="built_in">max</span>(g[i<span class="number">-3</span>], l[i<span class="number">-1</span>]) : <span class="built_in">max</span>(l[i<span class="number">-1</span>], <span class="number">0</span>);</span><br><span class="line">			l.<span class="built_in">push_back</span>(base + delta);</span><br><span class="line">			g.<span class="built_in">push_back</span>(<span class="built_in">max</span>(g[i<span class="number">-1</span>], l[i]));</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">return</span> g[len<span class="number">-1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>在discussion area又看到了一个有趣的解法，状态机解法，因为是求无限量交易的最优解，所以这种方法成立。</p>
-<p><img src="statemachine.gif" alt="state machine"></p>
+<p><img src="/2014/01/09/%E8%82%A1%E7%A5%A8%E4%B9%B0%E5%8D%96%E9%97%AE%E9%A2%98/statemachine.gif" alt="state machine"></p>
 <p>状态转移<br><code>s0[i] = max&#123;s0[i-1], s2[i-1]&#125;</code><br><code>s1[i] = max&#123;s1[i-1], s0[i-1] - prices[i]&#125;</code><br><code>s2[i] = s1[i-1] + prices[i]</code></p>
 <p>初始状态<br><code>s0[0]=0</code><br><code>s1[0]=-prices[0]</code><br><code>s2[0]=INT_MIN</code></p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">		<span class="type">int</span> len = prices.<span class="built_in">size</span>();</span><br><span class="line">		<span class="keyword">if</span> (len &lt;= <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt; s0, s1, s2;</span><br><span class="line">		s0.<span class="built_in">push_back</span>(<span class="number">0</span>);</span><br><span class="line">		s1.<span class="built_in">push_back</span>(-prices[<span class="number">0</span>]);</span><br><span class="line">		s2.<span class="built_in">push_back</span>(INT_MIN);</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>; i&lt;len; i++)</span><br><span class="line">		&#123;</span><br><span class="line">			s0.<span class="built_in">push_back</span>(<span class="built_in">max</span>(s0[i<span class="number">-1</span>], s2[i<span class="number">-1</span>]));</span><br><span class="line">			s1.<span class="built_in">push_back</span>(<span class="built_in">max</span>(s0[i<span class="number">-1</span>] - prices[i], s1[i<span class="number">-1</span>]));</span><br><span class="line">			s2.<span class="built_in">push_back</span>(s1[i<span class="number">-1</span>] + prices[i]);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">max</span>(s0[len<span class="number">-1</span>], s2[len<span class="number">-1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
@@ -151,7 +151,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="../../../../categories/IT-Technology/">IT Technology</a>
+  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
 </div>
 
 
@@ -281,11 +281,11 @@
 			
 		
 			
-				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
+				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
 			
 		
 			
@@ -301,11 +301,11 @@
 			
 		
 			
-				<li><a href="/tags/Career/" title="Career">Career<sup>1</sup></a></li>
+				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
+				<li><a href="/tags/Play/" title="Play">Play<sup>1</sup></a></li>
 			
 		
 		</ul>

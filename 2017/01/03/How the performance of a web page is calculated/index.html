@@ -40,7 +40,7 @@
     <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
     
     
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 
 <meta name="generator" content="Hexo 6.3.0"></head>
 
@@ -109,13 +109,13 @@
 <h3 id="Browser-measured-latency"><a href="#Browser-measured-latency" class="headerlink" title="Browser measured latency"></a>Browser measured latency</h3><p>For browser measured latencies, its overall diagram of web request is like below:</p>
 <span id="more"></span>
 
-<p><img src="browser1.png" alt="W3C PLT model"></p>
+<p><img src="/2017/01/03/How%20the%20performance%20of%20a%20web%20page%20is%20calculated/browser1.png" alt="W3C PLT model"></p>
 <p>The timestamp used in Client side is implemented by pseudo-code like below</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">st = new Date() /* baseline timestamp */</span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;onPageLoad()&quot;</span>&gt;</span></span><br><span class="line">bst = new Date()</span><br><span class="line">// Render html Page</span><br><span class="line">bed = new Date()</span><br><span class="line"> </span><br><span class="line">function onPageLoad()</span><br><span class="line">&#123;</span><br><span class="line">plst = new Date()</span><br><span class="line">// execute script</span><br><span class="line">pled = new Date()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="browser2.png" alt="Browser side latency"></p>
+<p><img src="/2017/01/03/How%20the%20performance%20of%20a%20web%20page%20is%20calculated/browser2.png" alt="Browser side latency"></p>
 <h3 id="Server-measured-latency"><a href="#Server-measured-latency" class="headerlink" title="Server measured latency"></a>Server measured latency</h3><p>About instrumentation, the timestamp used in Server side could use a long type to store.<br>Below is an example of a web service based on chunked transfer encode (2 chunks to render).</p>
-<p><img src="server.png" alt="Server side latency"></p>
+<p><img src="/2017/01/03/How%20the%20performance%20of%20a%20web%20page%20is%20calculated/server.png" alt="Server side latency"></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -123,7 +123,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="../../../../categories/IT-Technology/">IT Technology</a>
+  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
 </div>
 
 
@@ -260,11 +260,11 @@
 			
 		
 			
-				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
+				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
 			
 		
 			
@@ -280,11 +280,11 @@
 			
 		
 			
-				<li><a href="/tags/Career/" title="Career">Career<sup>1</sup></a></li>
+				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
+				<li><a href="/tags/Play/" title="Play">Play<sup>1</sup></a></li>
 			
 		
 		</ul>

@@ -37,7 +37,7 @@
     <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
     
     
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 
 <meta name="generator" content="Hexo 6.3.0"></head>
 
@@ -111,7 +111,7 @@
 <p>2.计算可以扩展长度的向量</p>
 <p>#d#a#b#c#b#a#e#e#<br>[1, 2, 1, 2, 1, 2, 1, 6, 1, 2, 1, 2, 1, 2, 3, 2, 1]</p>
 <p>3.计算时候可以利用回文串的性质进行优化</p>
-<p><img src="palindromicproperty.gif" alt="palindromic string property makes its big O to O(n)"></p>
+<p><img src="/2013/12/14/%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/palindromicproperty.gif" alt="palindromic string property makes its big O to O(n)"></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> longestPalindrome = <span class="keyword">function</span>(<span class="params">s</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> s2 = <span class="string">&#x27;#&#x27;</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>; i&lt;s.<span class="property">length</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		s2 += s[i] + <span class="string">&#x27;#&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">var</span> sl = [<span class="number">1</span>], max = <span class="number">0</span>, id = <span class="number">0</span>, maxid = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt; s2.<span class="property">length</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">var</span> cnt = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">if</span>(i &lt; max)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">var</span> pilot = id * <span class="number">2</span> - i;</span><br><span class="line">			cnt = sl[pilot] &lt; max - i + <span class="number">1</span> ? sl[pilot] : max - i + <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">var</span> tp=i-cnt, tn=i+cnt;		</span><br><span class="line">		<span class="keyword">while</span>(tp &gt;= <span class="number">0</span> &amp;&amp; tn &lt; s2.<span class="property">length</span> &amp;&amp; s2[tp] === s2[tn])</span><br><span class="line">		&#123;</span><br><span class="line">			cnt ++;</span><br><span class="line">			tp --;</span><br><span class="line">			tn ++;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		sl[i] = cnt;</span><br><span class="line">		<span class="keyword">if</span> (i + cnt - <span class="number">1</span> &gt; max)</span><br><span class="line">		&#123;</span><br><span class="line">			max = i + cnt - <span class="number">1</span>;</span><br><span class="line">			id = i;</span><br><span class="line">			<span class="keyword">if</span> (sl[i] &gt; sl[maxid])</span><br><span class="line">			&#123;</span><br><span class="line">				maxid = i;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">var</span> start = <span class="title class_">Math</span>.<span class="title function_">floor</span>((maxid - sl[maxid] + <span class="number">1</span>) / <span class="number">2</span>);</span><br><span class="line">	<span class="keyword">return</span> s.<span class="title function_">substring</span>(start, start + sl[maxid] - <span class="number">1</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
   
 	</div>
@@ -120,7 +120,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="../../../../categories/IT-Technology/">IT Technology</a>
+  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
 </div>
 
 
@@ -250,11 +250,11 @@
 			
 		
 			
-				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
+				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
 			
 		
 			
@@ -270,11 +270,11 @@
 			
 		
 			
-				<li><a href="/tags/Career/" title="Career">Career<sup>1</sup></a></li>
+				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
+				<li><a href="/tags/Play/" title="Play">Play<sup>1</sup></a></li>
 			
 		
 		</ul>

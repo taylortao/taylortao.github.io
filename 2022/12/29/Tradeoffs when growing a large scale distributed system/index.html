@@ -42,7 +42,7 @@
     <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
     
     
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 
 <meta name="generator" content="Hexo 6.3.0"></head>
 
@@ -110,14 +110,14 @@
 		<h1 id="A-simple-load-balancer"><a href="#A-simple-load-balancer" class="headerlink" title="A simple load balancer"></a>A simple load balancer</h1><p>To start with a very simple point, clients connect to your service through network, a load balancer routing requests to different fleets.</p>
 <span id="more"></span>
 
-<p><img src="loadbalancerexample.png" alt="load balancer example"></p>
+<p><img src="/2022/12/29/Tradeoffs%20when%20growing%20a%20large%20scale%20distributed%20system/loadbalancerexample.png" alt="load balancer example"></p>
 <h1 id="Single-tenant-LB"><a href="#Single-tenant-LB" class="headerlink" title="Single tenant LB"></a>Single tenant LB</h1><p>Starting from a single tenant load balancer, what that means is for every customer which has load balancer, there is a ENI created in their VPC and cross attached to the server in service provider’s network. normally there will be another standby instance for redundancy.<br>In this case, customers can send various type of traffic to our LB, which means we need to scale up&#x2F;out our capacity, which could be done vertically by adding large instance type or horizontally by adding more instances.<br>This created churns for customers since every time we scale up or out, we need to update DNS and customers could cache DNS, staffs like that.<br>The drawbacks are: it just cannot keep scaling, utilization might be low, deployments take time.</p>
-<p><img src="singletenant.png" alt="single tenant"></p>
+<p><img src="/2022/12/29/Tradeoffs%20when%20growing%20a%20large%20scale%20distributed%20system/singletenant.png" alt="single tenant"></p>
 <h1 id="Multi-tenant-LB"><a href="#Multi-tenant-LB" class="headerlink" title="Multi tenant LB"></a>Multi tenant LB</h1><p>Compare with single tenant system, multi tenant system provides better utilization, faster deployments(more agile) also larger buffer capacity to absord traffic, since it is shared by a set of customers. </p>
-<p><img src="multitenant.png" alt="multi tenant"></p>
+<p><img src="/2022/12/29/Tradeoffs%20when%20growing%20a%20large%20scale%20distributed%20system/multitenant.png" alt="multi tenant"></p>
 <h2 id="What-is-the-trade-off"><a href="#What-is-the-trade-off" class="headerlink" title="What is the trade-off?"></a>What is the trade-off?</h2><p>Noisy neighbors issue: a single customer is having a bad day cause impact to other customers<br>Even with sharding technology, it would still impact customers on the same shard. </p>
 <p>While for single tenant system, it has best isolation, and smallest blast radius.</p>
-<h2 id="To-solve-isolation-issue-shuffle-sharding"><a href="#To-solve-isolation-issue-shuffle-sharding" class="headerlink" title="To solve isolation issue: shuffle sharding"></a>To solve isolation issue: shuffle sharding</h2><p>As below graph, when customer B has a bad day, they will likely bring down instance 1,3,6 while other instances remain intact. customer A, C, D still could be mapped to a good instance.<br><img src="shufflesharding.png" alt="shuffle sharding"></p>
+<h2 id="To-solve-isolation-issue-shuffle-sharding"><a href="#To-solve-isolation-issue-shuffle-sharding" class="headerlink" title="To solve isolation issue: shuffle sharding"></a>To solve isolation issue: shuffle sharding</h2><p>As below graph, when customer B has a bad day, they will likely bring down instance 1,3,6 while other instances remain intact. customer A, C, D still could be mapped to a good instance.<br><img src="/2022/12/29/Tradeoffs%20when%20growing%20a%20large%20scale%20distributed%20system/shufflesharding.png" alt="shuffle sharding"></p>
 <p>Possibility of overlap could be decided by below 3 factors:</p>
 <ul>
 <li>number of nodes&#x2F;number of instances</li>
@@ -128,14 +128,14 @@
 <h1 id="Scaling-unbounded-growth-is-hard"><a href="#Scaling-unbounded-growth-is-hard" class="headerlink" title="Scaling: unbounded growth is hard"></a>Scaling: unbounded growth is hard</h1><p>Even data plane is more distributed, but we still have only single control plane that governs each region. </p>
 <p>For big region, it is impossible to test. other than that, this becomes an edge case to our dependencies, and which could hit dependency system’s unknown scaling limit. </p>
 <p>Best practice: don’t be an outlier &#x2F; big pain to dependency, since we don’t know when it will hit dependency’s limit.</p>
-<p><img src="cpunlimitedgrowth.png" alt="control plane unlimited growth"></p>
+<p><img src="/2022/12/29/Tradeoffs%20when%20growing%20a%20large%20scale%20distributed%20system/cpunlimitedgrowth.png" alt="control plane unlimited growth"></p>
 <h2 id="Cells-are-the-answer"><a href="#Cells-are-the-answer" class="headerlink" title="Cells are the answer"></a>Cells are the answer</h2><p>Within a single cell, both control plane and data plane scaling limit would be bounded in this case, so we know we are approaching failure.</p>
 <p>Each instance has some buffered capacity for new customers.</p>
 <p>Then in this case, whales become a big problem. whales are customers either have large config or high traffic, it could fall into any extreme case. </p>
 <p>We have no way to know a whale when creation, there is no indicators.</p>
 <p>When whales appears, they could soaked up lots of buffered capacity so quickly that cell is approach to its limit.</p>
 <p>In this case, we could automatically migrate whales to isolated capacity to protect other customers.</p>
-<p><img src="migratewhale.png" alt="migratewhale"></p>
+<p><img src="/2022/12/29/Tradeoffs%20when%20growing%20a%20large%20scale%20distributed%20system/migratewhale.png" alt="migratewhale"></p>
 <p>This is a trade-off between complexity VS flexibility.<br>Cell architecture is complex however it provides some flexibility when growing. </p>
 <h2 id="preset-cell-size"><a href="#preset-cell-size" class="headerlink" title="preset cell size"></a>preset cell size</h2><p>Using flexible cell size will be more friendly to cost, while costy to test. </p>
 <p>By having multiple cell sizes, it will reduce the overall cost and increase the complexity to test, a trade-off between cost VS testability.</p>
@@ -153,7 +153,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="../../../../categories/IT-Technology/">IT Technology</a>
+  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
 </div>
 
 
@@ -282,11 +282,11 @@
 			
 		
 			
-				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
+				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
 			
 		
 			
@@ -302,11 +302,11 @@
 			
 		
 			
-				<li><a href="/tags/Career/" title="Career">Career<sup>1</sup></a></li>
+				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
+				<li><a href="/tags/Play/" title="Play">Play<sup>1</sup></a></li>
 			
 		
 		</ul>

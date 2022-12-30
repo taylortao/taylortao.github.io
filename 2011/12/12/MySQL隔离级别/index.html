@@ -40,7 +40,7 @@
     <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
     
     
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 
 <meta name="generator" content="Hexo 6.3.0"></head>
 
@@ -191,15 +191,15 @@
 <p>建立实验表</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table tao (col1 tinyint unsigned, col2 varchar(20), primary key(col1));  </span><br><span class="line">Query OK, 0 rows affected (0.08 sec)  </span><br><span class="line">  </span><br><span class="line">mysql&gt; show create table tao \G;  </span><br><span class="line">*************************** 1. row ***************************  </span><br><span class="line">       Table: tao  </span><br><span class="line">Create Table: CREATE TABLE `tao` (  </span><br><span class="line">  `col1` tinyint(3) unsigned NOT NULL DEFAULT &#x27;0&#x27;,  </span><br><span class="line">  `col2` varchar(20) DEFAULT NULL,  </span><br><span class="line">  PRIMARY KEY (`col1`)  </span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8  </span><br><span class="line">1 row in set (0.00 sec)  </span><br></pre></td></tr></table></figure>
 
-<h4 id="演示脏读Dirty-Reads"><a href="#演示脏读Dirty-Reads" class="headerlink" title="演示脏读Dirty Reads"></a>演示脏读Dirty Reads</h4><p><img src="dirtyread.gif" alt="demo of Dirty Reads"></p>
+<h4 id="演示脏读Dirty-Reads"><a href="#演示脏读Dirty-Reads" class="headerlink" title="演示脏读Dirty Reads"></a>演示脏读Dirty Reads</h4><p><img src="/2011/12/12/MySQL%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/dirtyread.gif" alt="demo of Dirty Reads"></p>
 <p>更改隔离级别为Read Committed后，不存在脏读的问题。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; set global tx_isolation=&#x27;read-committed&#x27;;  </span><br><span class="line">Query OK, 0 rows affected (0.00 sec)  </span><br><span class="line">mysql&gt; set session tx_isolation=&#x27;read-committed&#x27;;  </span><br><span class="line">Query OK, 0 rows affected (0.00 sec) </span><br></pre></td></tr></table></figure>
 
-<h4 id="演示不可重复读Nonrepeatable-Reads"><a href="#演示不可重复读Nonrepeatable-Reads" class="headerlink" title="演示不可重复读Nonrepeatable Reads"></a>演示不可重复读Nonrepeatable Reads</h4><p><img src="nonrepeatableread.gif" alt="demo of Nonrepeatable Reads"></p>
+<h4 id="演示不可重复读Nonrepeatable-Reads"><a href="#演示不可重复读Nonrepeatable-Reads" class="headerlink" title="演示不可重复读Nonrepeatable Reads"></a>演示不可重复读Nonrepeatable Reads</h4><p><img src="/2011/12/12/MySQL%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/nonrepeatableread.gif" alt="demo of Nonrepeatable Reads"></p>
 <p>更改隔离级别为Repeatable Read后，不存在不可重复读的问题。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; set global tx_isolation=&#x27;repeatable-read&#x27;;  </span><br><span class="line">Query OK, 0 rows affected (0.00 sec)  </span><br><span class="line">  </span><br><span class="line">mysql&gt; set session tx_isolation=&#x27;repeatable-read&#x27;;  </span><br><span class="line">Query OK, 0 rows affected (0.00 sec)  </span><br></pre></td></tr></table></figure>
 
-<h4 id="演示幻读Phantoms"><a href="#演示幻读Phantoms" class="headerlink" title="演示幻读Phantoms"></a>演示幻读Phantoms</h4><p><img src="phantom.gif" alt="demo of Phantoms"></p>
+<h4 id="演示幻读Phantoms"><a href="#演示幻读Phantoms" class="headerlink" title="演示幻读Phantoms"></a>演示幻读Phantoms</h4><p><img src="/2011/12/12/MySQL%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/phantom.gif" alt="demo of Phantoms"></p>
 <p>更改隔离级别为完全串行化 Serializable 后，不存在幻读的问题。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; set global tx_isolation=&#x27;serializable&#x27;;  </span><br><span class="line">Query OK, 0 rows affected (0.00 sec)  </span><br><span class="line">  </span><br><span class="line">mysql&gt; set session tx_isolation=&#x27;serializable&#x27;;  </span><br><span class="line">Query OK, 0 rows affected (0.00 sec)  </span><br></pre></td></tr></table></figure>
 
@@ -211,7 +211,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="../../../../categories/IT-Technology/">IT Technology</a>
+  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
 </div>
 
 
@@ -348,11 +348,11 @@
 			
 		
 			
-				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
+				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
 			
 		
 			
@@ -368,11 +368,11 @@
 			
 		
 			
-				<li><a href="/tags/Career/" title="Career">Career<sup>1</sup></a></li>
+				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
+				<li><a href="/tags/Play/" title="Play">Play<sup>1</sup></a></li>
 			
 		
 		</ul>
