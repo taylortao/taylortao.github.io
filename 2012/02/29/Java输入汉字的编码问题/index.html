@@ -1,0 +1,566 @@
+
+ <!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Java输入汉字的编码问题 | Tingting Tao&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tingting Tao">
+    
+
+    
+    <meta name="description" content="这个简单的Java程序竟然有问题，如果我们输入的是中文，程序不会正常输出。 12345678import java.util.Scanner;  public class Test &amp;#123;      public static void main(String[] args) &amp;#123;          Scanner scanner &#x3D; new Scanner(System.in);">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java输入汉字的编码问题">
+<meta property="og:url" content="http://taylortao.github.io/2012/02/29/Java%E8%BE%93%E5%85%A5%E6%B1%89%E5%AD%97%E7%9A%84%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="Tingting Tao&#39;s Blog">
+<meta property="og:description" content="这个简单的Java程序竟然有问题，如果我们输入的是中文，程序不会正常输出。 12345678import java.util.Scanner;  public class Test &amp;#123;      public static void main(String[] args) &amp;#123;          Scanner scanner &#x3D; new Scanner(System.in);">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://taylortao.github.io/2012/02/29/Java%E8%BE%93%E5%85%A5%E6%B1%89%E5%AD%97%E7%9A%84%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/netbeansSetting.gif">
+<meta property="og:image" content="http://taylortao.github.io/2012/02/29/Java%E8%BE%93%E5%85%A5%E6%B1%89%E5%AD%97%E7%9A%84%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/encodingofchinesetao.gif">
+<meta property="article:published_time" content="2012-03-01T00:49:00.000Z">
+<meta property="article:modified_time" content="2022-12-30T00:35:16.656Z">
+<meta property="article:author" content="Tingting Tao">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Chinese encoding">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://taylortao.github.io/2012/02/29/Java%E8%BE%93%E5%85%A5%E6%B1%89%E5%AD%97%E7%9A%84%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/netbeansSetting.gif">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Tingting Tao&#39;s Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="../css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Tingting Tao&#39;s Blog">Tingting Tao&#39;s Blog</a></h1>
+				<h2 class="blog-motto">Welcome to Tingting&#39;s Blog</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:taylortao.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2012/02/29/Java输入汉字的编码问题/" title="Java输入汉字的编码问题" itemprop="url">Java输入汉字的编码问题</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tingting Tao" target="_blank" itemprop="author">Tingting Tao</a>
+		
+  <p class="article-time">
+    <time datetime="2012-03-01T00:49:00.000Z" itemprop="datePublished"> Published 2012-02-29</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<p>这个简单的Java程序竟然有问题，如果我们输入的是中文，程序不会正常输出。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Scanner;  </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test</span> &#123;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;  </span><br><span class="line">        <span class="type">Scanner</span> <span class="variable">scanner</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Scanner</span>(System.in);  </span><br><span class="line">        <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> scanner.next();  </span><br><span class="line">        System.out.println(<span class="string">&quot;你输入了 = &quot;</span>+ s);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">结果：  </span><br><span class="line">run：  </span><br><span class="line">陶   <span class="comment">// 用户输入  </span></span><br><span class="line">你输入了 = ��  </span><br><span class="line">成功生成（总时间：<span class="number">7</span> 秒）  </span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p>这究竟是为什么呢？<br>先了解一下Java的输入文件流机制，System.in是字节流。系统是按照每个字节读入，最后组成字节组作为读入的。<br>Scanner是套在System.in外面的字符流。下面我们直接显示System.in读入的字节</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ChineseEncoding</span> &#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">printBytes</span><span class="params">(<span class="type">byte</span>[] bytes)</span> &#123;  </span><br><span class="line">        <span class="keyword">for</span> (<span class="type">byte</span> b : bytes) &#123;  </span><br><span class="line">            printByte(b);  </span><br><span class="line">        &#125;  </span><br><span class="line">        System.out.println();  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">printByte</span><span class="params">(<span class="type">byte</span> abyte)</span> &#123;  </span><br><span class="line">        <span class="type">String</span> <span class="variable">hex</span> <span class="operator">=</span> <span class="string">&quot;00&quot;</span>+Integer.toHexString((<span class="type">int</span>)abyte);  </span><br><span class="line">        System.out.print(hex.substring(hex.length() - <span class="number">2</span>) + <span class="string">&quot;\t&quot;</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException &#123;  </span><br><span class="line">        <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;陶&quot;</span>;  </span><br><span class="line">        printBytes(s.getBytes(<span class="string">&quot;GBK&quot;</span>));  </span><br><span class="line">        printBytes(s.getBytes(<span class="string">&quot;UTF-8&quot;</span>));  </span><br><span class="line">        <span class="type">byte</span> <span class="variable">b</span> <span class="operator">=</span> (<span class="type">byte</span>) System.in.read();  </span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;  </span><br><span class="line">            printByte(b);  </span><br><span class="line">            b = (<span class="type">byte</span>) System.in.read();  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>我们可以看到System.in读入的字节流是默认以GBK编码的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">run：  </span><br><span class="line">cc        d5      <span class="comment">// 陶的GBK编码      </span></span><br><span class="line">e9        <span class="number">99</span>        b6        <span class="comment">// 陶的UTF8编码  </span></span><br><span class="line">陶  </span><br><span class="line">cc        d5        0a    <span class="comment">// 0a是回车生成的   </span></span><br></pre></td></tr></table></figure>
+
+<p>对比，可以知道Scanner的字符套默认是以GBK编码转化的。<br>下面这个输出可以验证</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">byte</span>[] b = <span class="keyword">new</span> <span class="title class_">byte</span>[]&#123;<span class="keyword">new</span> <span class="title class_">Byte</span>((<span class="type">byte</span>) <span class="number">0xcc</span>), <span class="keyword">new</span> <span class="title class_">Byte</span>((<span class="type">byte</span>) <span class="number">0xd5</span>)&#125;;  </span><br><span class="line">System.out.println(<span class="keyword">new</span> <span class="title class_">String</span>(b, <span class="string">&quot;GBK&quot;</span>));  </span><br></pre></td></tr></table></figure>
+
+<p>这个输出可以准确输出为：陶。<br>因此，我们有两个方法解决这个问题：<br>一、使用以下方式读入</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Scanner</span> <span class="variable">scanner</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Scanner</span>(System.in, <span class="string">&quot;GBK&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>二、更改默认编码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">encoding</span> <span class="operator">=</span> System.getProperty(<span class="string">&quot;file.encoding&quot;</span>);  </span><br><span class="line">System.out.println(encoding);  </span><br></pre></td></tr></table></figure>
+
+<p>这个输出为UTF8。如果输出为GBK则不会有开头所提的问题。可以认为file.encoding的值是Java程序main入口函数的默认编码。<br>NetBeans修改方法如下：<br><img src="netbeansSetting.gif" alt="change default encoding in Netbeans"></p>
+<p>附注：<br>可以看到陶的UTF8编码为<br>e9 99 b6<br>ef bb bf e9 99 b6（带有BOM头，其中BOM头为ef bb bf）<br>Unicode的编码为fe ff 76 96，其中fffe是控制高位和低位的发送顺序的。<br>其中变化方法如下：<br><img src="encodingofchinesetao.gif" alt="encoding of chinese TAO, from utf8 to GBK"></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="../../../../categories/IT-Technology/">IT Technology</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Java/">Java</a><a href="/tags/Chinese-encoding/">Chinese encoding</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://taylortao.github.io/2012/02/29/Java%E8%BE%93%E5%85%A5%E6%B1%89%E5%AD%97%E7%9A%84%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/" data-title="Java输入汉字的编码问题 | Tingting Tao&#39;s Blog" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2012/03/23/SCI期刊信息整理爬虫/" title="SCI期刊信息整理爬虫">
+  <strong>Previous: </strong><br/>
+  <span>
+  SCI期刊信息整理爬虫</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2012/02/21/科普-数据存储知识扫盲/"  title="科普-数据存储知识扫盲">
+ <strong>Next: </strong><br/> 
+ <span>科普-数据存储知识扫盲
+</span>
+</a>
+</div>
+
+</nav>
+
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/IT-Technology/" title="IT Technology">IT Technology<sup>38</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SystemDesign/" title="SystemDesign">SystemDesign<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Measurement/" title="Measurement">Measurement<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Cheatsheet/" title="Cheatsheet">Cheatsheet<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C">C<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GIT/" title="GIT">GIT<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AB-Testing/" title="AB Testing">AB Testing<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Adobe-Illustrator/" title="Adobe Illustrator">Adobe Illustrator<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Performance/" title="Performance">Performance<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Chinese-encoding/" title="Chinese encoding">Chinese encoding<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Spider/" title="Spider">Spider<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ServerSideEncryption/" title="ServerSideEncryption">ServerSideEncryption<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/System-design/" title="System design">System design<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Blog/" title="Blog">Blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Career/" title="Career">Career<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/taylor_tao" target="_blank" title="My old blog">My old blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> Hello, I&#39;m Tingting Tao. <br/>
+			Welcome to my blog!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/taylortao" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		<a href="https://www.facebook.com/tao.tingting" target="_blank" class="icon-facebook" title="facebook"></a>
+		
+		
+		
+		
+		
+		
+		<a href="mailto:taylortao.tingting@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		
+		<a href="/about" target="_blank" title="Tingting Tao">Tingting Tao</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

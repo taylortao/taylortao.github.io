@@ -1,0 +1,608 @@
+
+ <!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Java cheatsheet | Tingting Tao&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tingting Tao">
+    
+
+    
+    <meta name="description" content="1-dimension array1234int[] arr &#x3D; new int[]&amp;#123; 1, 2, 3 &amp;#125;;int[] arr2 &#x3D; &amp;#123;1,2,3,4,5&amp;#125;;int len &#x3D; arr.length; &#x2F;&#x2F; 3int len2 &#x3D; arr2.length; &#x2F;&#x2F; 5  2-dimension array1int[][] matrix &#x3D; &amp;#123;&amp;#12">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java cheatsheet">
+<meta property="og:url" content="http://taylortao.github.io/2021/12/02/Java%20cheatsheet/index.html">
+<meta property="og:site_name" content="Tingting Tao&#39;s Blog">
+<meta property="og:description" content="1-dimension array1234int[] arr &#x3D; new int[]&amp;#123; 1, 2, 3 &amp;#125;;int[] arr2 &#x3D; &amp;#123;1,2,3,4,5&amp;#125;;int len &#x3D; arr.length; &#x2F;&#x2F; 3int len2 &#x3D; arr2.length; &#x2F;&#x2F; 5  2-dimension array1int[][] matrix &#x3D; &amp;#123;&amp;#12">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://taylortao.github.io/2021/12/02/Java%20cheatsheet/java_container_1.png">
+<meta property="og:image" content="http://taylortao.github.io/2021/12/02/Java%20cheatsheet/java_container_2.png">
+<meta property="og:image" content="http://taylortao.github.io/2021/12/02/Java%20cheatsheet/container_complexity.png">
+<meta property="article:published_time" content="2021-12-03T03:37:25.000Z">
+<meta property="article:modified_time" content="2022-12-30T00:35:16.653Z">
+<meta property="article:author" content="Tingting Tao">
+<meta property="article:tag" content="Cheatsheet">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://taylortao.github.io/2021/12/02/Java%20cheatsheet/java_container_1.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Tingting Tao&#39;s Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="../css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Tingting Tao&#39;s Blog">Tingting Tao&#39;s Blog</a></h1>
+				<h2 class="blog-motto">Welcome to Tingting&#39;s Blog</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:taylortao.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2021/12/02/Java cheatsheet/" title="Java cheatsheet" itemprop="url">Java cheatsheet</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tingting Tao" target="_blank" itemprop="author">Tingting Tao</a>
+		
+  <p class="article-time">
+    <time datetime="2021-12-03T03:37:25.000Z" itemprop="datePublished"> Published 2021-12-02</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-dimension-array"><span class="toc-number">1.</span> <span class="toc-text">1-dimension array</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-dimension-array"><span class="toc-number">2.</span> <span class="toc-text">2-dimension array</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linklist-object"><span class="toc-number">3.</span> <span class="toc-text">Linklist object</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#String"><span class="toc-number">4.</span> <span class="toc-text">String</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Containers"><span class="toc-number">5.</span> <span class="toc-text">Containers</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#List"><span class="toc-number">5.1.</span> <span class="toc-text">List</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Array-x2F-List-conversion"><span class="toc-number">5.2.</span> <span class="toc-text">Array &#x2F; List conversion</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Stack"><span class="toc-number">5.3.</span> <span class="toc-text">Stack</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Queue"><span class="toc-number">5.4.</span> <span class="toc-text">Queue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Deque"><span class="toc-number">5.5.</span> <span class="toc-text">Deque</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Heap-x2F-Priority-queue"><span class="toc-number">5.6.</span> <span class="toc-text">Heap &#x2F; Priority queue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HashSet-HashMap-HashTable"><span class="toc-number">5.7.</span> <span class="toc-text">HashSet HashMap HashTable</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TreeSet"><span class="toc-number">5.8.</span> <span class="toc-text">TreeSet</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TreeMap"><span class="toc-number">5.9.</span> <span class="toc-text">TreeMap</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sort"><span class="toc-number">6.</span> <span class="toc-text">Sort</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Sort-array"><span class="toc-number">6.1.</span> <span class="toc-text">Sort array</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Sort-collection"><span class="toc-number">6.2.</span> <span class="toc-text">Sort collection</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Custom-comparator"><span class="toc-number">6.3.</span> <span class="toc-text">Custom comparator</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h3 id="1-dimension-array"><a href="#1-dimension-array" class="headerlink" title="1-dimension array"></a>1-dimension array</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>[] arr = <span class="keyword">new</span> <span class="title class_">int</span>[]&#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> &#125;;</span><br><span class="line"><span class="type">int</span>[] arr2 = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line"><span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> arr.length; <span class="comment">// 3</span></span><br><span class="line"><span class="type">int</span> <span class="variable">len2</span> <span class="operator">=</span> arr2.length; <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-dimension-array"><a href="#2-dimension-array" class="headerlink" title="2-dimension array"></a>2-dimension array</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>[][] matrix = &#123;&#123;<span class="number">1</span>, <span class="number">2</span>&#125;, &#123;<span class="number">3</span>, <span class="number">4</span>&#125;&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<span id="more"></span>
+
+
+<h3 id="Linklist-object"><a href="#Linklist-object" class="headerlink" title="Linklist object"></a>Linklist object</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ListNode</span> &#123;</span><br><span class="line">    <span class="type">int</span> val;</span><br><span class="line">    ListNode next;</span><br><span class="line">    ListNode() &#123;&#125;</span><br><span class="line">    ListNode(<span class="type">int</span> val) &#123; <span class="built_in">this</span>.val = val; &#125;</span><br><span class="line">    ListNode(<span class="type">int</span> val, ListNode next) &#123; <span class="built_in">this</span>.val = val; <span class="built_in">this</span>.next = next; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;hello&quot;</span>;</span><br><span class="line"><span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> str.length(); <span class="comment">// 5</span></span><br><span class="line"><span class="type">Char</span> <span class="variable">c</span> <span class="operator">=</span> str.charAt(<span class="number">0</span>); <span class="comment">// &#x27;h&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Containers"><a href="#Containers" class="headerlink" title="Containers"></a>Containers</h3><p><img src="java_container_1.png" alt="Java container 1"><br><img src="java_container_2.png" alt="Java container 2"><br><img src="container_complexity.png" alt="Complexity"></p>
+<h4 id="List"><a href="#List" class="headerlink" title="List"></a>List</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">list.add(<span class="number">1</span>);</span><br><span class="line">list.size(); <span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line">List&lt;Integer&gt; list2 = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;(List.of(<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>));</span><br><span class="line">list2.contains(<span class="number">1</span>); <span class="comment">// true</span></span><br><span class="line">list2.get(<span class="number">2</span>); <span class="comment">// 5</span></span><br><span class="line">list2.remove(<span class="number">1</span>); <span class="comment">// &#123;1, 5&#125;</span></span><br><span class="line"></span><br><span class="line">List&lt;Integer&gt; list3 = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(Arrays.asList(<span class="number">1</span>, <span class="number">5</span>, <span class="number">9</span>, <span class="number">11</span>));</span><br><span class="line">list3.isEmpty(); <span class="comment">// false</span></span><br><span class="line">list3.remove(<span class="number">0</span>); <span class="comment">// 5, 9, 11</span></span><br></pre></td></tr></table></figure>
+
+<p>Vectors are synchronized, ArrayLists are not.</p>
+<h4 id="Array-x2F-List-conversion"><a href="#Array-x2F-List-conversion" class="headerlink" title="Array &#x2F; List conversion"></a>Array &#x2F; List conversion</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; list = Arrays.asList(<span class="string">&quot;C&quot;</span>, <span class="string">&quot;C++&quot;</span>, <span class="string">&quot;Java&quot;</span>);</span><br><span class="line">String[] array = list.toArray();</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Stack&lt;Integer&gt; st = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">st.push(<span class="number">1</span>); st.push(<span class="number">2</span>); st.push(<span class="number">3</span>);</span><br><span class="line"><span class="type">Integer</span> <span class="variable">top</span> <span class="operator">=</span> st.pop(); <span class="comment">// 3</span></span><br><span class="line"><span class="type">Integer</span> <span class="variable">peekTop</span> <span class="operator">=</span> st.peek(); <span class="comment">// 2</span></span><br><span class="line">st.isEmpty(); <span class="comment">// false</span></span><br><span class="line"></span><br><span class="line"><span class="type">Integer</span> <span class="variable">pos</span> <span class="operator">=</span> st.search(<span class="number">1</span>); <span class="comment">// 2</span></span><br><span class="line"><span class="type">Integer</span> <span class="variable">pos2</span> <span class="operator">=</span> st.search(<span class="number">2</span>); <span class="comment">// 1</span></span><br><span class="line"><span class="type">Integer</span> <span class="variable">pos3</span> <span class="operator">=</span> st.search(<span class="number">3</span>); <span class="comment">// -1</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Queue&lt;Integer&gt; q = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">q.add(<span class="number">1</span>); q.add(<span class="number">2</span>); q.add(<span class="number">3</span>);</span><br><span class="line">q.isEmpty(); <span class="comment">// false</span></span><br><span class="line"><span class="type">Integer</span> <span class="variable">top</span> <span class="operator">=</span> q.poll(); <span class="comment">// 1</span></span><br><span class="line"><span class="type">Integer</span> <span class="variable">peekTop</span> <span class="operator">=</span> q.peek(); <span class="comment">// 2</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="Deque"><a href="#Deque" class="headerlink" title="Deque"></a>Deque</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Deque&lt;Integer&gt; deque = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">deque.add(<span class="number">1</span>); deque.addLast(<span class="number">2</span>); <span class="comment">// [1 2]</span></span><br><span class="line">deque.addFirst(<span class="number">3</span>); <span class="comment">// [3 1 2]</span></span><br><span class="line"></span><br><span class="line">deque.peekFirst(); <span class="comment">// 3</span></span><br><span class="line">deque.peekLast(); <span class="comment">// 2</span></span><br><span class="line">deque.size(); <span class="comment">// 3</span></span><br><span class="line">deque.removeFirst();</span><br><span class="line">deque.removeLast(); <span class="comment">// [1]</span></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Heap-x2F-Priority-queue"><a href="#Heap-x2F-Priority-queue" class="headerlink" title="Heap &#x2F; Priority queue"></a>Heap &#x2F; Priority queue</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">PriorityQueue&lt;Integer&gt; pq = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>();</span><br><span class="line">pq.addAll(List.of(<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">11</span>,<span class="number">1</span>));</span><br><span class="line"><span class="type">int</span> <span class="variable">top</span> <span class="operator">=</span> pq.poll(); <span class="comment">// 1</span></span><br><span class="line"><span class="type">int</span> <span class="variable">peekTop</span> <span class="operator">=</span> pq.peek(); <span class="comment">// 3</span></span><br><span class="line">pq.isEmpty(); <span class="comment">// false</span></span><br><span class="line">pq.remove(<span class="number">7</span>); <span class="comment">// [3, 5, 11, 9]</span></span><br><span class="line"><span class="type">int</span> <span class="variable">size</span> <span class="operator">=</span> pq.size(); <span class="comment">// 4</span></span><br><span class="line"></span><br><span class="line">PriorityQueue&lt;Integer&gt; pq = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>(Comparator.reverseOrder());</span><br><span class="line">pq.addAll(List.of(<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">11</span>,<span class="number">1</span>));</span><br><span class="line"><span class="type">int</span> <span class="variable">top</span> <span class="operator">=</span> pq.poll(); <span class="comment">// 11</span></span><br><span class="line"><span class="type">int</span> <span class="variable">peekTop</span> <span class="operator">=</span> pq.peek(); <span class="comment">// 9</span></span><br><span class="line">pq.isEmpty(); <span class="comment">// false</span></span><br><span class="line">pq.remove(<span class="number">7</span>); <span class="comment">// [9, 3, 5, 1]</span></span><br><span class="line"><span class="type">int</span> <span class="variable">size</span> <span class="operator">=</span> pq.size(); <span class="comment">// 4</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="HashSet-HashMap-HashTable"><a href="#HashSet-HashMap-HashTable" class="headerlink" title="HashSet HashMap HashTable"></a>HashSet HashMap HashTable</h4><ul>
+<li>HashTables are synchronized, HashMaps are not.</li>
+<li>HashSet is unordered and unsorted Set. LinkedHashSet is the ordered version of HashSet, LinkedHashSet maintains the insertion order. When we iterate through a HashSet, the order is unpredictable while it is predictable in case of LinkedHashSet.</li>
+</ul>
+<p>HashSet:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HashSet&lt;Integer&gt; set = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">set.add(<span class="number">1</span>); set.add(<span class="number">3</span>); set.add(<span class="number">9</span>);</span><br><span class="line">set.isEmpty(); <span class="comment">// false</span></span><br><span class="line">set.contains(<span class="number">9</span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>HashMap:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">HashMap&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">map.put(<span class="number">1</span>,<span class="number">2</span>); map.put(<span class="number">3</span>,<span class="number">4</span>); map.put(<span class="number">5</span>,<span class="number">6</span>); map.put(<span class="number">7</span>,<span class="number">8</span>);</span><br><span class="line">map.containsKey(<span class="number">1</span>); <span class="comment">// true</span></span><br><span class="line">map.containsKey(<span class="number">2</span>); <span class="comment">// false</span></span><br><span class="line">map.put(<span class="number">1</span>, <span class="number">10</span>);</span><br><span class="line">map.get(<span class="number">1</span>); <span class="comment">// 10</span></span><br><span class="line">map.get(<span class="number">10</span>); <span class="comment">// null</span></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="TreeSet"><a href="#TreeSet" class="headerlink" title="TreeSet"></a>TreeSet</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">TreeSet&lt;Integer&gt; set = <span class="keyword">new</span> <span class="title class_">TreeSet</span>&lt;&gt;();</span><br><span class="line">set.add(<span class="number">1</span>); set.add(<span class="number">3</span>); set.add(<span class="number">5</span>); set.add(<span class="number">7</span>);</span><br><span class="line">set.ceiling(<span class="number">2</span>); <span class="comment">// 3</span></span><br><span class="line">set.ceiling(<span class="number">3</span>); <span class="comment">// 3</span></span><br><span class="line">set.floor(<span class="number">2</span>); <span class="comment">// 1</span></span><br><span class="line">set.floor(<span class="number">3</span>); <span class="comment">// 3</span></span><br><span class="line">set.lower(<span class="number">2</span>); <span class="comment">// 1</span></span><br><span class="line">set.lower(<span class="number">3</span>); <span class="comment">// 1</span></span><br><span class="line">set.higher(<span class="number">2</span>); <span class="comment">// 3</span></span><br><span class="line">set.higher(<span class="number">3</span>); <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="TreeMap"><a href="#TreeMap" class="headerlink" title="TreeMap"></a>TreeMap</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">TreeMap&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">TreeMap</span>();</span><br><span class="line">map.put(<span class="number">1</span>, <span class="number">11</span>); map.put(<span class="number">2</span>, <span class="number">22</span>); map.put(<span class="number">5</span>, <span class="number">55</span>); map.put(<span class="number">3</span>, <span class="number">33</span>);</span><br><span class="line"><span class="type">Integer</span> <span class="variable">v</span> <span class="operator">=</span> map.get(<span class="number">3</span>); <span class="comment">// 33</span></span><br><span class="line"><span class="type">Integer</span> <span class="variable">v2</span> <span class="operator">=</span> map.get(<span class="number">8</span>); <span class="comment">// null</span></span><br><span class="line"><span class="type">boolean</span> <span class="variable">c1</span> <span class="operator">=</span> map.containsKey(<span class="number">3</span>); <span class="comment">// true</span></span><br><span class="line"><span class="type">boolean</span> <span class="variable">c2</span> <span class="operator">=</span> map.containsValue(<span class="number">22</span>); <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="type">Integer</span> <span class="variable">first</span> <span class="operator">=</span> map.firstKey(); <span class="comment">// 1</span></span><br><span class="line"><span class="type">Integer</span> <span class="variable">last</span> <span class="operator">=</span> map.lastKey(); <span class="comment">// 5</span></span><br><span class="line">map.remove(<span class="number">1</span>);</span><br><span class="line"><span class="type">Integer</span> <span class="variable">first2</span> <span class="operator">=</span> map.firstKey(); <span class="comment">// 2</span></span><br><span class="line">map.ceilingKey(<span class="number">4</span>); <span class="comment">// 5</span></span><br><span class="line">map.ceilingKey(<span class="number">5</span>); <span class="comment">// 5</span></span><br><span class="line">map.floorKey(<span class="number">4</span>); <span class="comment">// 3</span></span><br><span class="line">map.higherKey(<span class="number">4</span>); <span class="comment">// 5</span></span><br><span class="line">map.higherKey(<span class="number">5</span>); <span class="comment">// null</span></span><br><span class="line">map.lowerKey(<span class="number">4</span>); <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line">map.get(<span class="number">1</span>); <span class="comment">// 11</span></span><br><span class="line">map.get(<span class="number">8</span>); <span class="comment">// null</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Sort"><a href="#Sort" class="headerlink" title="Sort"></a>Sort</h3><h4 id="Sort-array"><a href="#Sort-array" class="headerlink" title="Sort array"></a>Sort array</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Integer[] arr = &#123; <span class="number">13</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">45</span>, <span class="number">21</span>&#125;;</span><br><span class="line">Arrays.sort(arr); <span class="comment">// [6, 7, 13, 21, 45]</span></span><br><span class="line">Arrays.sort(arr, Collections.reverseOrder()); <span class="comment">// [45, 21, 13, 7, 6]</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Sort-collection"><a href="#Sort-collection" class="headerlink" title="Sort collection"></a>Sort collection</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;(List.of(<span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">8</span>, <span class="number">7</span>));</span><br><span class="line">Collections.sort(list); <span class="comment">// [1, 2, 3, 7, 8]</span></span><br><span class="line">Collections.sort(list, Collections.reverseOrder()); <span class="comment">// [8, 7, 3, 2, 1]</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Custom-comparator"><a href="#Custom-comparator" class="headerlink" title="Custom comparator"></a>Custom comparator</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TestClass</span> &#123;</span><br><span class="line">    <span class="type">int</span> sortKey;</span><br><span class="line">    String otherProps;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">TestClass</span><span class="params">(<span class="type">int</span> k, String v)</span> &#123;</span><br><span class="line">        sortKey = k;</span><br><span class="line">        otherProps = v;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SortByKey</span> <span class="keyword">implements</span> <span class="title class_">Comparator</span>&lt;TestClass&gt; &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">compare</span><span class="params">(TestClass t1, TestClass t2)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (t1.sortKey &lt; t2.sortKey) &#123;</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (t1.sortKey == t2.sortKey) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">List&lt;TestClass&gt; list = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;(List.of(</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">TestClass</span>( <span class="number">1</span>, <span class="string">&quot;a&quot;</span>),</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">TestClass</span>( <span class="number">8</span>, <span class="string">&quot;ddd&quot;</span>),</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">TestClass</span>( <span class="number">3</span>, <span class="string">&quot;aaa&quot;</span>),</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">TestClass</span>( <span class="number">11</span>, <span class="string">&quot;cc&quot;</span>),</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">TestClass</span>( <span class="number">6</span>, <span class="string">&quot;b&quot;</span>)</span><br><span class="line">));</span><br><span class="line"></span><br><span class="line">Collections.sort(list, <span class="keyword">new</span> <span class="title class_">SortByKey</span>()); <span class="comment">// [1, 2, 3, 7, 8]</span></span><br><span class="line"><span class="comment">// [1 -&gt; a, 3 -&gt; aaa, 6 -&gt; b, 8 -&gt; ddd, 11 -&gt; cc]</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="../../../../categories/IT-Technology/">IT Technology</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Cheatsheet/">Cheatsheet</a><a href="/tags/Java/">Java</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://taylortao.github.io/2021/12/02/Java%20cheatsheet/" data-title="Java cheatsheet | Tingting Tao&#39;s Blog" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2021/12/30/Rate-limiting/" title="Rate limiting">
+  <strong>Previous: </strong><br/>
+  <span>
+  Rate limiting</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2020/04/05/Cheat sheet - tmux/"  title="Cheatsheet - tmux">
+ <strong>Next: </strong><br/> 
+ <span>Cheatsheet - tmux
+</span>
+</a>
+</div>
+
+</nav>
+
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-dimension-array"><span class="toc-number">1.</span> <span class="toc-text">1-dimension array</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-dimension-array"><span class="toc-number">2.</span> <span class="toc-text">2-dimension array</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linklist-object"><span class="toc-number">3.</span> <span class="toc-text">Linklist object</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#String"><span class="toc-number">4.</span> <span class="toc-text">String</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Containers"><span class="toc-number">5.</span> <span class="toc-text">Containers</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#List"><span class="toc-number">5.1.</span> <span class="toc-text">List</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Array-x2F-List-conversion"><span class="toc-number">5.2.</span> <span class="toc-text">Array &#x2F; List conversion</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Stack"><span class="toc-number">5.3.</span> <span class="toc-text">Stack</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Queue"><span class="toc-number">5.4.</span> <span class="toc-text">Queue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Deque"><span class="toc-number">5.5.</span> <span class="toc-text">Deque</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Heap-x2F-Priority-queue"><span class="toc-number">5.6.</span> <span class="toc-text">Heap &#x2F; Priority queue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HashSet-HashMap-HashTable"><span class="toc-number">5.7.</span> <span class="toc-text">HashSet HashMap HashTable</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TreeSet"><span class="toc-number">5.8.</span> <span class="toc-text">TreeSet</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TreeMap"><span class="toc-number">5.9.</span> <span class="toc-text">TreeMap</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sort"><span class="toc-number">6.</span> <span class="toc-text">Sort</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Sort-array"><span class="toc-number">6.1.</span> <span class="toc-text">Sort array</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Sort-collection"><span class="toc-number">6.2.</span> <span class="toc-text">Sort collection</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Custom-comparator"><span class="toc-number">6.3.</span> <span class="toc-text">Custom comparator</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/IT-Technology/" title="IT Technology">IT Technology<sup>38</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SystemDesign/" title="SystemDesign">SystemDesign<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Measurement/" title="Measurement">Measurement<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Cheatsheet/" title="Cheatsheet">Cheatsheet<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C">C<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GIT/" title="GIT">GIT<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AB-Testing/" title="AB Testing">AB Testing<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Adobe-Illustrator/" title="Adobe Illustrator">Adobe Illustrator<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Performance/" title="Performance">Performance<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Chinese-encoding/" title="Chinese encoding">Chinese encoding<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Spider/" title="Spider">Spider<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ServerSideEncryption/" title="ServerSideEncryption">ServerSideEncryption<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/System-design/" title="System design">System design<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Blog/" title="Blog">Blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Career/" title="Career">Career<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/taylor_tao" target="_blank" title="My old blog">My old blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> Hello, I&#39;m Tingting Tao. <br/>
+			Welcome to my blog!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/taylortao" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		<a href="https://www.facebook.com/tao.tingting" target="_blank" class="icon-facebook" title="facebook"></a>
+		
+		
+		
+		
+		
+		
+		<a href="mailto:taylortao.tingting@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		
+		<a href="/about" target="_blank" title="Tingting Tao">Tingting Tao</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

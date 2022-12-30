@@ -1,0 +1,613 @@
+
+ <!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>A glance at GIT internals | Tingting Tao&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tingting Tao">
+    
+
+    
+    <meta name="description" content="Git - a stupid content trackerfast, scalable, distributed revision control system with unusually rich command set that provides both high-level operations and full access to internals.Total nearly 150">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A glance at GIT internals">
+<meta property="og:url" content="http://taylortao.github.io/2016/09/02/A%20glance%20at%20GIT%20internals/index.html">
+<meta property="og:site_name" content="Tingting Tao&#39;s Blog">
+<meta property="og:description" content="Git - a stupid content trackerfast, scalable, distributed revision control system with unusually rich command set that provides both high-level operations and full access to internals.Total nearly 150">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-09-03T01:37:25.000Z">
+<meta property="article:modified_time" content="2022-12-30T00:35:16.648Z">
+<meta property="article:author" content="Tingting Tao">
+<meta property="article:tag" content="GIT">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Tingting Tao&#39;s Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="../css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Tingting Tao&#39;s Blog">Tingting Tao&#39;s Blog</a></h1>
+				<h2 class="blog-motto">Welcome to Tingting&#39;s Blog</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:taylortao.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/09/02/A glance at GIT internals/" title="A glance at GIT internals" itemprop="url">A glance at GIT internals</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tingting Tao" target="_blank" itemprop="author">Tingting Tao</a>
+		
+  <p class="article-time">
+    <time datetime="2016-09-03T01:37:25.000Z" itemprop="datePublished"> Published 2016-09-02</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Git-a-stupid-content-tracker"><span class="toc-number">1.</span> <span class="toc-text">Git - a stupid content tracker</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Revision-control-How-hard"><span class="toc-number">2.</span> <span class="toc-text">Revision control? How hard?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Git%E2%80%99s-version-database"><span class="toc-number">3.</span> <span class="toc-text">Git’s version database</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Next-let%E2%80%99s-see-how-git-works"><span class="toc-number">4.</span> <span class="toc-text">Next, let’s see how git works:</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#git-init"><span class="toc-number">4.1.</span> <span class="toc-text">git init</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#git-add"><span class="toc-number">4.2.</span> <span class="toc-text">git add</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#git-commit"><span class="toc-number">4.3.</span> <span class="toc-text">git commit</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#git-branch-git-checkout"><span class="toc-number">4.4.</span> <span class="toc-text">git branch, git checkout</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#git-merge"><span class="toc-number">4.5.</span> <span class="toc-text">git merge</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#summary"><span class="toc-number">5.</span> <span class="toc-text">summary</span></a></li></ol>
+		
+		</div>
+		
+		<h3 id="Git-a-stupid-content-tracker"><a href="#Git-a-stupid-content-tracker" class="headerlink" title="Git - a stupid content tracker"></a>Git - a stupid content tracker</h3><p>fast, scalable, distributed revision control system with unusually rich command set that provides both high-level operations and full access to internals.<br>Total nearly 150+ commands.</p>
+<blockquote>
+<p>porcelain command: user friendly command<br>plumbing command: low-level command</p>
+</blockquote>
+<h3 id="Revision-control-How-hard"><a href="#Revision-control-How-hard" class="headerlink" title="Revision control? How hard?"></a>Revision control? How hard?</h3><p>simple method: just copy all the old files and paste it into a new folder and rename it with date.<br>it must supply main function: </p>
+<blockquote>
+<p>tracking changes and versions</p>
+</blockquote>
+<p>traditional revision control shortcomings (central repository):</p>
+<blockquote>
+<p>need to re-sync everytime your commit.<br>single point failure: if server down, you can not recover the code history from client.(you can just recover snapshot)</p>
+</blockquote>
+<p>why git is different? </p>
+<blockquote>
+<p>git is distributed.</p>
+</blockquote>
+<p>what does distributed mean? </p>
+<blockquote>
+<p>you do not have one central place which keeps track of your data.<br>client have all the data(includes the history).</p>
+</blockquote>
+<span id="more"></span>
+
+<h3 id="Git’s-version-database"><a href="#Git’s-version-database" class="headerlink" title="Git’s version database"></a>Git’s version database</h3><p>Basicly, it is a content addressable filesystem. a simple key-value data store.<br>Key is SHA-1 hash (20 bytes &#x3D; 40 hex &#x3D; 160 bits)<br>value is binary files, which contains:</p>
+<blockquote>
+<p>commits: snapshot<br>trees: directories<br>blobs: content of files &#x2F; data. (Aha, Blob is short for binary large object)</p>
+</blockquote>
+<h3 id="Next-let’s-see-how-git-works"><a href="#Next-let’s-see-how-git-works" class="headerlink" title="Next, let’s see how git works:"></a>Next, let’s see how git works:</h3><h4 id="git-init"><a href="#git-init" class="headerlink" title="git init"></a>git init</h4><figure class="highlight cmd"><figcaption><span>bash</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init demo1</span><br></pre></td></tr></table></figure>
+
+<p>git init creates an empty git repository: basicly a .git derectory.</p>
+<p>fake git init:</p>
+<figure class="highlight cmd"><figcaption><span>bash</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> demo2</span><br><span class="line"><span class="built_in">cd</span> demo2</span><br><span class="line"><span class="built_in">mkdir</span> .git</span><br><span class="line"><span class="built_in">mkdir</span> .git\refs\heads</span><br><span class="line"><span class="built_in">mkdir</span> .git\refs\tags</span><br><span class="line"><span class="built_in">mkdir</span> .git\objects</span><br><span class="line"><span class="built_in">echo</span> ref: refs/heads/master &gt; .git\HEAD</span><br><span class="line">git status</span><br></pre></td></tr></table></figure>
+<p>git folder creation is successfully done.</p>
+<h4 id="git-add"><a href="#git-add" class="headerlink" title="git add"></a>git add</h4><p>in demo1</p>
+<figure class="highlight cmd"><figcaption><span>bash</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> hello world &gt; hello.txt</span><br><span class="line">git add hello.txt</span><br><span class="line"></span><br><span class="line">git hash-object hello.txt</span><br><span class="line"><span class="number">4</span>a1f4754cfddb3dd0d24067b7a1eed9ceac6a31d</span><br></pre></td></tr></table></figure>
+
+<p>and in objects directory, there would be a new folder called 4a and a file named <code>1f4754cfddb3dd0d24067b7a1eed9ceac6a31d</code> in it. </p>
+<p>in demo1, use git ls-files – stage to see what files is in staging area.<br>and use git cat-file to see the content of the specific SHA-1 code. (given the prefix of the SHA-1)</p>
+<figure class="highlight cmd"><figcaption><span>bash</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">git ls-files --stage</span><br><span class="line"><span class="number">100644</span> <span class="number">4</span>a1f4754cfddb3dd0d24067b7a1eed9ceac6a31d <span class="number">0</span>       hello.txt</span><br><span class="line"></span><br><span class="line">git cat-file -p <span class="number">4</span>a1f475</span><br><span class="line">hello world</span><br><span class="line"></span><br><span class="line">git cat-file -t <span class="number">4</span>a1f475</span><br><span class="line">blob</span><br></pre></td></tr></table></figure>
+
+<p>git add will generate the blob in the objects folder, and update it to stage area(staging area is a index file under .git directory, if you remove index file, then use <code>git status</code> you will see the files it back to working area).</p>
+<p>at this stage, if you create a file named hello2.txt and share the same content with hello.txt, in objects, it won’t generate a new file. since it only contains file content in the SHA-1 named blob file.</p>
+<p>in demo2, how to use <code>git add</code> manually?<br>step1: generate SHA-1 hash file<br>step2: generate index file</p>
+<figure class="highlight cmd"><figcaption><span>hash</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> hello world &gt; hello.txt</span><br><span class="line">git hash-object hello.txt -w</span><br><span class="line">git update-index --add hello.txt</span><br><span class="line">git status</span><br></pre></td></tr></table></figure>
+
+<h4 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h4><p>in demo1</p>
+<figure class="highlight cmd"><figcaption><span>bash</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &quot;test&quot;</span><br><span class="line">git log</span><br><span class="line">commit <span class="number">1</span>f72ef4ecd9f5e7764ae724ae3f5d4ae66a89b00</span><br><span class="line"><span class="function">Author: <span class="title">xxx</span></span></span><br><span class="line"><span class="function"><span class="title">Date</span>:   <span class="title">Fri</span> <span class="title">Sep</span> 2 17:38:52 2016 +0800</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">git</span> <span class="title">cat</span>-<span class="title">file</span> -<span class="title">t</span> 1<span class="title">f72</span></span></span><br><span class="line"><span class="function"><span class="title">commit</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">git</span> <span class="title">cat</span>-<span class="title">file</span> -<span class="title">p</span> 1<span class="title">f72</span></span></span><br><span class="line"><span class="function"><span class="title">tree</span> <span class="title">e06d595ebb52f88bd09eca6580cc8d59c77e16ec</span></span></span><br><span class="line"><span class="function"><span class="title">author</span> <span class="title">xxx</span> 1472809132 +0800</span></span><br><span class="line"><span class="function"><span class="title">committer</span> <span class="title">xxx</span> 1472809132 +0800</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">test</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">git</span> <span class="title">cat</span>-<span class="title">file</span> -<span class="title">t</span> <span class="title">e06d</span></span></span><br><span class="line"><span class="function"><span class="title">tree</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">git</span> <span class="title">cat</span>-<span class="title">file</span> -<span class="title">p</span> <span class="title">e06d</span></span></span><br><span class="line"><span class="function">100644 <span class="title">blob</span> 4<span class="title">a1f4754cfddb3dd0d24067b7a1eed9ceac6a31d</span>    <span class="title">hello.txt</span></span></span><br></pre></td></tr></table></figure>
+
+<p>there are 2 more files under objects, first is <code>1f72ef4ecd9f5e7764ae724ae3f5d4ae66a89b00</code>, it is a commit, and contains tree hash, author, date. the second is <code>e06d595ebb52f88bd09eca6580cc8d59c77e16ec</code>, it is a tree(directory).</p>
+<p>how to find every commits?<br>in refs\heads\master, commits’ head hash is stored in this file.</p>
+<p>then I will add another commit</p>
+<figure class="highlight cmd"><figcaption><span>bash</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">git cat-file -p <span class="number">44298</span></span><br><span class="line"><span class="built_in">tree</span> <span class="number">60</span>ca37b3eacbbafe7fe2d4937435fc066ea66f4d</span><br><span class="line">parent <span class="number">1</span>f72ef4ecd9f5e7764ae724ae3f5d4ae66a89b00</span><br><span class="line">author xxx <span class="number">1472810103</span> +<span class="number">0800</span></span><br><span class="line">committer xxx <span class="number">1472810103</span> +<span class="number">0800</span></span><br><span class="line"></span><br><span class="line">test submit <span class="number">2</span></span><br><span class="line"></span><br><span class="line">git cat-file -p  <span class="number">60</span>ca37</span><br><span class="line"><span class="number">100644</span> blob <span class="number">4</span>a1f4754cfddb3dd0d24067b7a1eed9ceac6a31d    hello.txt</span><br><span class="line"><span class="number">100644</span> blob a11c93477878ecbf51db644f8f3d216401cdecee    hello2.txt</span><br><span class="line"></span><br><span class="line">git ls-files --stage</span><br><span class="line"><span class="number">100644</span> <span class="number">4</span>a1f4754cfddb3dd0d24067b7a1eed9ceac6a31d <span class="number">0</span>       hello.txt</span><br><span class="line"><span class="number">100644</span> a11c93477878ecbf51db644f8f3d216401cdecee <span class="number">0</span>       hello2.txt</span><br></pre></td></tr></table></figure>
+
+<p>all files are in root directory. if there is a sub directory, it might be like this</p>
+<figure class="highlight cmd"><figcaption><span>bash</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git cat-file -p e893</span><br><span class="line"><span class="number">040000</span> <span class="built_in">tree</span> d9eed2a757811df3416c243044f61f62e6d03813    folder</span><br><span class="line"><span class="number">100644</span> blob <span class="number">4</span>a1f4754cfddb3dd0d24067b7a1eed9ceac6a31d    hello.txt</span><br><span class="line"><span class="number">100644</span> blob a11c93477878ecbf51db644f8f3d216401cdecee    hello2.txt</span><br><span class="line"></span><br><span class="line">git cat-file -p d9ee</span><br><span class="line"><span class="number">100644</span> blob a11c93477878ecbf51db644f8f3d216401cdecee    hello2.txt</span><br></pre></td></tr></table></figure>
+
+<h4 id="git-branch-git-checkout"><a href="#git-branch-git-checkout" class="headerlink" title="git branch, git checkout"></a>git branch, git checkout</h4><figure class="highlight cmd"><figcaption><span>bash</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b branch</span><br><span class="line">Switched to a new branch &#x27;branch&#x27;</span><br></pre></td></tr></table></figure>
+<p>there is a new file under refs\head\branch, and its content is its head SHA-1 code.<br>and if you use git checkout, it will modify HEAD file’s content to <code>ref: refs/heads/branch </code>.</p>
+<h4 id="git-merge"><a href="#git-merge" class="headerlink" title="git merge"></a>git merge</h4><p>step1, find the common ancestor of two linked list.<br>step2, copy the diff objects. deal with conficts of file. and generate a new commit.</p>
+<h3 id="summary"><a href="#summary" class="headerlink" title="summary"></a>summary</h3><p>Git as a filesystem, it is content addressable.</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="../../../../categories/IT-Technology/">IT Technology</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/GIT/">GIT</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://taylortao.github.io/2016/09/02/A%20glance%20at%20GIT%20internals/" data-title="A glance at GIT internals | Tingting Tao&#39;s Blog" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/01/03/How the performance of a web page is calculated/" title="How the performance of a web page is calculated">
+  <strong>Previous: </strong><br/>
+  <span>
+  How the performance of a web page is calculated</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/07/07/正则高尔夫/"  title="正则高尔夫">
+ <strong>Next: </strong><br/> 
+ <span>正则高尔夫
+</span>
+</a>
+</div>
+
+</nav>
+
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Git-a-stupid-content-tracker"><span class="toc-number">1.</span> <span class="toc-text">Git - a stupid content tracker</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Revision-control-How-hard"><span class="toc-number">2.</span> <span class="toc-text">Revision control? How hard?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Git%E2%80%99s-version-database"><span class="toc-number">3.</span> <span class="toc-text">Git’s version database</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Next-let%E2%80%99s-see-how-git-works"><span class="toc-number">4.</span> <span class="toc-text">Next, let’s see how git works:</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#git-init"><span class="toc-number">4.1.</span> <span class="toc-text">git init</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#git-add"><span class="toc-number">4.2.</span> <span class="toc-text">git add</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#git-commit"><span class="toc-number">4.3.</span> <span class="toc-text">git commit</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#git-branch-git-checkout"><span class="toc-number">4.4.</span> <span class="toc-text">git branch, git checkout</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#git-merge"><span class="toc-number">4.5.</span> <span class="toc-text">git merge</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#summary"><span class="toc-number">5.</span> <span class="toc-text">summary</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/IT-Technology/" title="IT Technology">IT Technology<sup>38</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SystemDesign/" title="SystemDesign">SystemDesign<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Measurement/" title="Measurement">Measurement<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Cheatsheet/" title="Cheatsheet">Cheatsheet<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C">C<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GIT/" title="GIT">GIT<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AB-Testing/" title="AB Testing">AB Testing<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Adobe-Illustrator/" title="Adobe Illustrator">Adobe Illustrator<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Performance/" title="Performance">Performance<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Chinese-encoding/" title="Chinese encoding">Chinese encoding<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Spider/" title="Spider">Spider<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ServerSideEncryption/" title="ServerSideEncryption">ServerSideEncryption<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/System-design/" title="System design">System design<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Blog/" title="Blog">Blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Career/" title="Career">Career<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/taylor_tao" target="_blank" title="My old blog">My old blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> Hello, I&#39;m Tingting Tao. <br/>
+			Welcome to my blog!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/taylortao" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		<a href="https://www.facebook.com/tao.tingting" target="_blank" class="icon-facebook" title="facebook"></a>
+		
+		
+		
+		
+		
+		
+		<a href="mailto:taylortao.tingting@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		
+		<a href="/about" target="_blank" title="Tingting Tao">Tingting Tao</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
