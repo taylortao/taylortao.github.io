@@ -79,6 +79,68 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2023/01/08/免疫力读书笔记/" title="读书笔记：免疫力" itemprop="url">读书笔记：免疫力</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tingting Tao" target="_blank" itemprop="author">Tingting Tao</a>
+		
+  <p class="article-time">
+    <time datetime="2023-01-08T23:34:00.000Z" itemprop="datePublished"> Published 2023-01-08</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>日本女性 新发癌症病例数排名：乳腺，大肠，肺。其中经常使用特别油腻，含有大量添加剂的视频不利于健康，触发大肠癌。多吃有益于肠道细菌繁殖的食材，比如富含膳食纤维的蔬菜水果和发酵食品有利于大肠健康。</p>
+<h3 id="癌是如何形成的？"><a href="#癌是如何形成的？" class="headerlink" title="癌是如何形成的？"></a>癌是如何形成的？</h3><p>1癌细胞生成：起始因子（initiator）：人体细胞每天都在新陈代谢，在致癌物质，病毒感染，年龄增长等的作用下，细胞复制更容易出错。包括活性氧，化学物质，紫外线等。<br>预防：避免烟，辐射，紫外线等，服用抗氧化物质<br>2促进癌变：促癌因子（promoter）：把变异细胞转化为癌细胞。包括病毒，脂肪和盐分<br>3癌细胞增殖：NK细胞（natural killer cell）：在体内巡逻，攻击癌细胞</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2023/01/08/%E5%85%8D%E7%96%AB%E5%8A%9B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Book-notes/">Book notes</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Diet/">Diet</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2022/12/29/Tradeoffs when growing a large scale distributed system/" title="Tradeoffs when growing a large scale distributed system" itemprop="url">Tradeoffs when growing a large scale distributed system</a>
   </h1>
   <p class="article-author">By
@@ -666,73 +728,9 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/05/03/Binary search/" title="Binary search" itemprop="url">Binary search</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Tingting Tao" target="_blank" itemprop="author">Tingting Tao</a>
-		
-  <p class="article-time">
-    <time datetime="2017-05-04T00:01:01.000Z" itemprop="datePublished"> Published 2017-05-03</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>There is a template for binary search, by using which you do not need to think too much about the boundary and how to narrow down the interval &#x2F; how to calculate mid value.</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// check null …</span></span><br><span class="line"><span class="type">int</span> s = <span class="number">0</span>, e = <span class="built_in">array</span>.size() - <span class="number">1</span>;</span><br><span class="line"><span class="keyword">while</span> (s + <span class="number">1</span> &lt; e) &#123;</span><br><span class="line">    <span class="type">int</span> mid = s + ((e - s) &gt;&gt; <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">array</span>[mid] == target) &#123; ... &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">array</span>[mid] &gt; target) &#123; e = mid; &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123; s = mid; &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// check value</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">array</span>[s] == target) &#123; ... &#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">array</span>[e] == target) &#123; ... &#125;</span><br></pre></td></tr></table></figure>
-
-<p>Compared with normal binary search, the difference is that it cannot find the optimum value at while loop, instead, it sustains two possible value, and then check them after loop.</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/05/03/Binary%20search/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/Algorithm/">Algorithm</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next</a>
   </nav>
 
 </div>
@@ -747,6 +745,10 @@
 <div class="categorieslist">
 	<p class="asidetitle">Categories</p>
 		<ul>
+		
+		  
+			<li><a href="/categories/Book-notes/" title="Book notes">Book notes<sup>1</sup></a></li>
+		  
 		
 		  
 			<li><a href="/categories/IT-Technology/" title="IT Technology">IT Technology<sup>40</sup></a></li>
@@ -895,7 +897,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2023 
 		
 		<a href="/about" target="_blank" title="Tingting Tao">Tingting Tao</a>
 		

@@ -79,6 +79,70 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2017/05/03/Binary search/" title="Binary search" itemprop="url">Binary search</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tingting Tao" target="_blank" itemprop="author">Tingting Tao</a>
+		
+  <p class="article-time">
+    <time datetime="2017-05-04T00:01:01.000Z" itemprop="datePublished"> Published 2017-05-03</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>There is a template for binary search, by using which you do not need to think too much about the boundary and how to narrow down the interval &#x2F; how to calculate mid value.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// check null …</span></span><br><span class="line"><span class="type">int</span> s = <span class="number">0</span>, e = <span class="built_in">array</span>.size() - <span class="number">1</span>;</span><br><span class="line"><span class="keyword">while</span> (s + <span class="number">1</span> &lt; e) &#123;</span><br><span class="line">    <span class="type">int</span> mid = s + ((e - s) &gt;&gt; <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">array</span>[mid] == target) &#123; ... &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">array</span>[mid] &gt; target) &#123; e = mid; &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123; s = mid; &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// check value</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">array</span>[s] == target) &#123; ... &#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">array</span>[e] == target) &#123; ... &#125;</span><br></pre></td></tr></table></figure>
+
+<p>Compared with normal binary search, the difference is that it cannot find the optimum value at while loop, instead, it sustains two possible value, and then check them after loop.</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/05/03/Binary%20search/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Algorithm/">Algorithm</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2017/04/24/mysql-problems-in-leetcode/" title="mysql problems in leetcode" itemprop="url">mysql problems in leetcode</a>
   </h1>
   <p class="article-author">By
@@ -710,72 +774,9 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2013/12/20/状态机/" title="状态机" itemprop="url">状态机</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Tingting Tao" target="_blank" itemprop="author">Tingting Tao</a>
-		
-  <p class="article-time">
-    <time datetime="2013-12-21T05:08:00.000Z" itemprop="datePublished"> Published 2013-12-20</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>看到一道判断数的有效性的问题<br>Some examples:<br>“0” &#x3D;&gt; true<br>“ 0.1 “ &#x3D;&gt; true<br>“abc” &#x3D;&gt; false<br>“1 a” &#x3D;&gt; false<br>“2e10” &#x3D;&gt; true</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/valid-number/">https://leetcode.com/problems/valid-number/</a></p>
-<p>这个题目类似于一个简化版的状态机（state machine）。可以人工画出来状态机。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2013/12/20/%E7%8A%B6%E6%80%81%E6%9C%BA/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/Algorithm/">Algorithm</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/">Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next</a>
+    <a class="extend prev" rel="prev" href="/">Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next</a>
   </nav>
 
 </div>
@@ -790,6 +791,10 @@
 <div class="categorieslist">
 	<p class="asidetitle">Categories</p>
 		<ul>
+		
+		  
+			<li><a href="/categories/Book-notes/" title="Book notes">Book notes<sup>1</sup></a></li>
+		  
 		
 		  
 			<li><a href="/categories/IT-Technology/" title="IT Technology">IT Technology<sup>40</sup></a></li>
@@ -938,7 +943,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2023 
 		
 		<a href="/about" target="_blank" title="Tingting Tao">Tingting Tao</a>
 		
