@@ -79,6 +79,70 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2024/02/02/Congressional Sampling/" title="Congressional data sampling overview" itemprop="url">Congressional data sampling overview</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tingting Tao" target="_blank" itemprop="author">Tingting Tao</a>
+		
+  <p class="article-time">
+    <time datetime="2024-02-02T17:17:25.000Z" itemprop="datePublished"> Published 2024-02-02</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h3 id="Why-sampling"><a href="#Why-sampling" class="headerlink" title="Why sampling?"></a>Why sampling?</h3><p>Consider maintaining a highly concurrent service, and with 3k-5k requests per second hitting one server. this will generate a large number of request logs. Among all those request logs, normally data plane apis (data related) have a much larger volume than control plane apis (management related).</p>
+<p>We want to understand how healthy the service is running, how healthy every apis are, note that a api with lower volume does not make it less important. </p>
+<p>How do we do that? when the request logs data is large, it is often advantageous to choose a smaller subset of data which could summarize the original dataset, this is called sampling. Main idea is to take a statistically significant sample of data and then analyse this sample rather than having to use the whole original data set.</p>
+<p>By querying sampling data, the system is able to provide a efficient result which is approximate to the real answer.</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2024/02/02/Congressional%20Sampling/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Sampling/">Sampling</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2023/01/08/免疫力读书笔记/" title="读书笔记：免疫力" itemprop="url">读书笔记：免疫力</a>
   </h1>
   <p class="article-author">By
@@ -655,79 +719,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2020/01/18/System-design-questions-template/" title="System design questions template" itemprop="url">System design questions template</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Tingting Tao" target="_blank" itemprop="author">Tingting Tao</a>
-		
-  <p class="article-time">
-    <time datetime="2020-01-19T04:08:00.000Z" itemprop="datePublished"> Published 2020-01-18</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>This article is about the process of defining archiecture, components, modules, interfaces and data for a system to satisfy specified requirement.<br>Also the whole processes could be shorten as SNAKE.</p>
-<h3 id="Clarify-the-problem-Scenario"><a href="#Clarify-the-problem-Scenario" class="headerlink" title="Clarify the problem (Scenario)"></a>Clarify the problem (Scenario)</h3><p>Clarify the problem or in another word, scenarios and use cases (include corner cases).<br>Below is an example for a video streaming service:</p>
-<ul>
-<li>Register&#x2F;log in, play video, or video recommendation</li>
-<li>Prioritize all the scenarios and deep dive into it.</li>
-<li>Play video<ul>
-<li>(1) Generate channel</li>
-<li>(2) Get all videos in the channel </li>
-<li>(3) Play videos in the channel</li>
-</ul>
-</li>
-</ul>
-<p>Later in micro design section, we could discuss concrete interface: input &#x2F; output.</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2020/01/18/System-design-questions-template/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/SystemDesign/">SystemDesign</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next</a>
@@ -751,7 +742,7 @@
 		  
 		
 		  
-			<li><a href="/categories/IT-Technology/" title="IT Technology">IT Technology<sup>40</sup></a></li>
+			<li><a href="/categories/IT-Technology/" title="IT Technology">IT Technology<sup>41</sup></a></li>
 		  
 		
 		</ul>
@@ -784,6 +775,10 @@
 			
 		
 			
+				<li><a href="/tags/Sampling/" title="Sampling">Sampling<sup>2</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/C/" title="C">C<sup>2</sup></a></li>
 			
 		
@@ -800,11 +795,11 @@
 			
 		
 			
-				<li><a href="/tags/AB-Testing/" title="AB Testing">AB Testing<sup>1</sup></a></li>
+				<li><a href="/tags/Adobe-Illustrator/" title="Adobe Illustrator">Adobe Illustrator<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Adobe-Illustrator/" title="Adobe Illustrator">Adobe Illustrator<sup>1</sup></a></li>
+				<li><a href="/tags/AB-Testing/" title="AB Testing">AB Testing<sup>1</sup></a></li>
 			
 		
 			
@@ -837,10 +832,6 @@
 		
 			
 				<li><a href="/tags/Blog/" title="Blog">Blog<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -897,7 +888,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2023 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2024 
 		
 		<a href="/about" target="_blank" title="Tingting Tao">Tingting Tao</a>
 		

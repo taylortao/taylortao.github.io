@@ -20,7 +20,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://taylortao.github.io/2021/12/30/Rate-limiting/draft.png">
 <meta property="article:published_time" content="2021-12-31T06:37:25.000Z">
-<meta property="article:modified_time" content="2022-12-30T00:35:16.664Z">
+<meta property="article:modified_time" content="2024-02-22T23:32:25.993Z">
 <meta property="article:author" content="Tingting Tao">
 <meta property="article:tag" content="SystemDesign">
 <meta property="article:tag" content="RateLimiting">
@@ -99,7 +99,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Rate-limiting"><span class="toc-number">1.</span> <span class="toc-text">Rate limiting</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Rate-limiting"><span class="toc-number">1.</span> <span class="toc-text">Rate limiting</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#A-comparison-between-token-bucket-and-leaky-bucket"><span class="toc-number">2.</span> <span class="toc-text">A comparison between token bucket and leaky bucket</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Token-bucket"><span class="toc-number">2.1.</span> <span class="toc-text">Token bucket</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Leaky-bucket"><span class="toc-number">2.2.</span> <span class="toc-text">Leaky bucket</span></a></li></ol></li></ol>
 		
 		</div>
 		
@@ -113,6 +113,9 @@
 <span id="more"></span>
 
 <p><img src="/2021/12/30/Rate-limiting/draft.png" alt="rate limiting"></p>
+<h3 id="A-comparison-between-token-bucket-and-leaky-bucket"><a href="#A-comparison-between-token-bucket-and-leaky-bucket" class="headerlink" title="A comparison between token bucket and leaky bucket"></a>A comparison between token bucket and leaky bucket</h3><h4 id="Token-bucket"><a href="#Token-bucket" class="headerlink" title="Token bucket"></a>Token bucket</h4><p>Can handle bursty traffic because the bucket can store tokens, allowing for temporary bursts of data as long as there are tokens in the bucket, rate of token addition and size of the bucket can be adjusted to control allowed bursty.</p>
+<h4 id="Leaky-bucket"><a href="#Leaky-bucket" class="headerlink" title="Leaky bucket"></a>Leaky bucket</h4><p>Requests are added to a queue&#x2F;bucket, and they are released at a steady, constant rate. If the bucket is full, incoming requests are rejected.</p>
+<p>It can be useful for smoothing out the traffic, and ideal for maintaining a uniform output rate. however overflow requests can result in rejection, which does not allow too much of traffic bursts.</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -178,7 +181,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Rate-limiting"><span class="toc-number">1.</span> <span class="toc-text">Rate limiting</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Rate-limiting"><span class="toc-number">1.</span> <span class="toc-text">Rate limiting</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#A-comparison-between-token-bucket-and-leaky-bucket"><span class="toc-number">2.</span> <span class="toc-text">A comparison between token bucket and leaky bucket</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Token-bucket"><span class="toc-number">2.1.</span> <span class="toc-text">Token bucket</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Leaky-bucket"><span class="toc-number">2.2.</span> <span class="toc-text">Leaky bucket</span></a></li></ol></li></ol>
  
   </div>
 
@@ -196,7 +199,7 @@
 		  
 		
 		  
-			<li><a href="/categories/IT-Technology/" title="IT Technology">IT Technology<sup>40</sup></a></li>
+			<li><a href="/categories/IT-Technology/" title="IT Technology">IT Technology<sup>41</sup></a></li>
 		  
 		
 		</ul>
@@ -229,6 +232,10 @@
 			
 		
 			
+				<li><a href="/tags/Sampling/" title="Sampling">Sampling<sup>2</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/C/" title="C">C<sup>2</sup></a></li>
 			
 		
@@ -245,11 +252,11 @@
 			
 		
 			
-				<li><a href="/tags/AB-Testing/" title="AB Testing">AB Testing<sup>1</sup></a></li>
+				<li><a href="/tags/Adobe-Illustrator/" title="Adobe Illustrator">Adobe Illustrator<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Adobe-Illustrator/" title="Adobe Illustrator">Adobe Illustrator<sup>1</sup></a></li>
+				<li><a href="/tags/AB-Testing/" title="AB Testing">AB Testing<sup>1</sup></a></li>
 			
 		
 			
@@ -282,10 +289,6 @@
 		
 			
 				<li><a href="/tags/Blog/" title="Blog">Blog<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Scala/" title="Scala">Scala<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -342,7 +345,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2023 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2024 
 		
 		<a href="/about" target="_blank" title="Tingting Tao">Tingting Tao</a>
 		
