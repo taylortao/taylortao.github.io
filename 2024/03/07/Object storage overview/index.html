@@ -22,7 +22,7 @@
 <meta property="og:image" content="http://taylortao.github.io/2024/03/07/Object%20storage%20overview/StratifiedTree.png">
 <meta property="og:image" content="http://taylortao.github.io/2024/03/07/Object%20storage%20overview/ErasureEncoding.png">
 <meta property="article:published_time" content="2024-03-07T20:37:25.000Z">
-<meta property="article:modified_time" content="2024-03-07T23:19:19.297Z">
+<meta property="article:modified_time" content="2024-03-15T18:27:37.558Z">
 <meta property="article:author" content="Tingting Tao">
 <meta property="article:tag" content="Storage">
 <meta name="twitter:card" content="summary">
@@ -140,12 +140,46 @@
 </ul>
 <h4 id="How-to-choose-best-durability-type"><a href="#How-to-choose-best-durability-type" class="headerlink" title="How to choose best durability type?"></a>How to choose best durability type?</h4><p>Questions to ask:<br>(1) how big is the storage data?<br>(2) read frequently or infrequently (hot or cold)<br>(3) require multi-AZ availability &#x2F; can tolerate high read latency<br>(4) durability<br>(5) cost</p>
 <h4 id="Hard-drives"><a href="#Hard-drives" class="headerlink" title="Hard drives"></a>Hard drives</h4><p>It is vital to plan according to manufacturer and real-world benchmarks to maximize your storage performance. Take a look at peak IOPS and throughput ratings, read&#x2F;write ratios, RAID penalties, and physical latency, etc.<br>IOPS: input&#x2F;output operations per second, calculated by: 1 second &#x2F; (Average Seek Time + Average Latency)<br>IOSP for SSD: 3000 to 40000 while for HDD, it is around 55-180.<br>Throughput for SSD: up to 2000 MBps, HDD maybe couple hundreds MBps.<br>SSD: solid state drive, HDD: hard disk drive</p>
+<p>Anecdotal data</p>
+<ul>
+<li>HDD: Seek time: 4-9 msec</li>
+<li>SSD: Seek time: 0.08-0.16 msec</li>
+</ul>
 <h4 id="Durability-Erasure-coding"><a href="#Durability-Erasure-coding" class="headerlink" title="Durability - Erasure coding"></a>Durability - Erasure coding</h4><p>Erasure coding: use the magic of math (Galois fields and Reed Solomon encodings), we can split the object blob into smaller shards, and erasure code them such that we can reconstruct the blob with a subset of the shards.<br>We then store different shards on disk. Let’s call the total number of shards N, and the required number of shards K, the replication count used to estimate cost would be N&#x2F;K. </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PUT path: Matrix[NxK] x Data[Kx1] = Physical Shards[Nx1] (K of them is data, N-K is parity)</span><br><span class="line">GET path: Data[Kx1] = Randomly picked K physical Shards[K&#x27;x1] x Matrix&#x27;[KxK] to restore data.</span><br></pre></td></tr></table></figure>
 
 <p>Smaller K might be optimized for small and hot objects. while for large and cold blobs, need to optimize for small replication count factor for lower cost.<br>Erasure coding is trading read&#x2F;write performance (more IOPS, CPU calculation, Network) for lower cost and higher durability.<br>Below is an example of Reed-Solomon encoding with four data units and two parity units:</p>
 <p><img src="/2024/03/07/Object%20storage%20overview/ErasureEncoding.png" alt="erasure encoding"></p>
 <h4 id="Data-integrity-checksum"><a href="#Data-integrity-checksum" class="headerlink" title="Data integrity - checksum"></a>Data integrity - checksum</h4><p>We normally guarantee data integrity by calculating a checksum and store it with data.<br>To calculate a checksum, a cryptographic hash function like MD5, SHA-1, SHA-256, or SHA-512 is used. The hash function takes the input data and produces checksum, and store checksum together with data. when client retriving data, it uses checksum to verify the received data is not corrupted. otherwise it should retrieve data from another replica.</p>
+<p>Anecdotal data</p>
+<table>
+<thead>
+<tr>
+<th>Checksum algorithm</th>
+<th>Compute time(64KB)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SHA256</td>
+<td>35 microseconds</td>
+</tr>
+<tr>
+<td>MD5</td>
+<td>24 microseconds</td>
+</tr>
+<tr>
+<td>SHA1</td>
+<td>19 microseconds</td>
+</tr>
+<tr>
+<td>CRC32</td>
+<td>1.1 microseconds</td>
+</tr>
+<tr>
+<td>CRC32C</td>
+<td>1.0 microseconds</td>
+</tr>
+</tbody></table>
 <h4 id="Garbage-collecction-compaction"><a href="#Garbage-collecction-compaction" class="headerlink" title="Garbage collecction - compaction"></a>Garbage collecction - compaction</h4><p>Async and lazy deletion, its responsibilities:</p>
 <ul>
 <li>(1) merge storage blobs into continuous blobs.</li>
@@ -190,6 +224,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2024/04/26/Key value storage overview/" title="Distributed key value storage overview (Study notes)">
+  <strong>Previous: </strong><br/>
+  <span>
+  Distributed key value storage overview (Study notes)</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2024/02/02/Congressional Sampling/"  title="Congressional data sampling overview">
@@ -230,7 +272,7 @@
 		  
 		
 		  
-			<li><a href="/categories/IT-Technology/" title="IT Technology">IT Technology<sup>42</sup></a></li>
+			<li><a href="/categories/IT-Technology/" title="IT Technology">IT Technology<sup>43</sup></a></li>
 		  
 		
 		</ul>

@@ -79,6 +79,71 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2024/04/26/Key value storage overview/" title="Distributed key value storage overview (Study notes)" itemprop="url">Distributed key value storage overview (Study notes)</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tingting Tao" target="_blank" itemprop="author">Tingting Tao</a>
+		
+  <p class="article-time">
+    <time datetime="2024-04-26T20:37:29.000Z" itemprop="datePublished"> Published 2024-04-26</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h1 id="High-level-components"><a href="#High-level-components" class="headerlink" title="High level components"></a>High level components</h1><p>Will discuss through couple aspects, includes: Index, Replication, Failure detection and Consistency, the last parts will be some existing database example.</p>
+<h2 id="Index"><a href="#Index" class="headerlink" title="Index"></a>Index</h2><p>A database index is used for speeding up reads based on a specific key. Index will slow down database write and speed up read.</p>
+<h3 id="Hash-index"><a href="#Hash-index" class="headerlink" title="Hash index"></a>Hash index</h3><p>Hash index is kept in memory hash table of key mapped to the memory location of the data, occasionally write to disk for persistence. however, it works poorly on disk.</p>
+<p>Pros: easy to implement and veryfast (RAM is fast)<br>Cons: all keys must fit in memory and it is bad for range queries.</p>
+<p>Scenarios: it is fast but only useful on small datasets.</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2024/04/26/Key%20value%20storage%20overview/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Key-value-storage/">Key value storage</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2024/03/07/Object storage overview/" title="Distributed object storage overview (Study notes)" itemprop="url">Distributed object storage overview (Study notes)</a>
   </h1>
   <p class="article-author">By
@@ -641,81 +706,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2020/04/05/Cheat sheet - tmux/" title="Cheatsheet - tmux" itemprop="url">Cheatsheet - tmux</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Tingting Tao" target="_blank" itemprop="author">Tingting Tao</a>
-		
-  <p class="article-time">
-    <time datetime="2020-04-05T18:37:25.000Z" itemprop="datePublished"> Published 2020-04-05</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h3 id="Pane"><a href="#Pane" class="headerlink" title="Pane"></a>Pane</h3><ul>
-<li>spilt horizontally: <code>Ctrl-b %</code></li>
-<li>split vertically: <code>Ctrl-b &quot;</code></li>
-<li>navigate between panes: <code>Ctrl-b &lt;arrow key&gt;</code></li>
-<li>close: <code>Ctrl-d</code></li>
-<li>make a pane go full screen: <code>Ctrl-b z</code> </li>
-<li>shrink it back to its previous size: <code>Ctrl-b z</code>  again</li>
-<li>resize pane in direction:  <code>Ctrl-b esc-&lt;arrow key&gt;</code></li>
-</ul>
-<h3 id="Window"><a href="#Window" class="headerlink" title="Window"></a>Window</h3><ul>
-<li>create new window: <code>Ctrl-b c</code></li>
-<li>navigate:  <code>Ctrl-b p</code> &#x2F; <code>Ctrl-b n</code> &#x2F; <code>Ctrl-b &lt;number&gt;</code></li>
-<li>close: <code>Ctrl-d</code></li>
-<li>rename: <code>Ctrl-b ,</code></li>
-</ul>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2020/04/05/Cheat%20sheet%20-%20tmux/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/Cheatsheet/">Cheatsheet</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next</a>
@@ -739,7 +729,7 @@
 		  
 		
 		  
-			<li><a href="/categories/IT-Technology/" title="IT Technology">IT Technology<sup>42</sup></a></li>
+			<li><a href="/categories/IT-Technology/" title="IT Technology">IT Technology<sup>43</sup></a></li>
 		  
 		
 		</ul>
