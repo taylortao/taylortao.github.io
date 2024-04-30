@@ -19,7 +19,7 @@
 <meta property="og:description" content="High level componentsWill discuss through couple aspects, includes: Index, Replication, Failure detection and Consistency, the last parts will be some existing database example. IndexA database index">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-04-26T20:37:29.000Z">
-<meta property="article:modified_time" content="2024-04-29T02:32:45.516Z">
+<meta property="article:modified_time" content="2024-04-30T20:36:21.980Z">
 <meta property="article:author" content="Tingting Tao">
 <meta property="article:tag" content="Key value storage">
 <meta name="twitter:card" content="summary">
@@ -96,7 +96,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#High-level-components"><span class="toc-number">1.</span> <span class="toc-text">High level components</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Index"><span class="toc-number">1.1.</span> <span class="toc-text">Index</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hash-index"><span class="toc-number">1.1.1.</span> <span class="toc-text">Hash index</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SSTable-and-LSM-Tree"><span class="toc-number">1.1.2.</span> <span class="toc-text">SSTable and LSM Tree</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#B-Tree"><span class="toc-number">1.1.3.</span> <span class="toc-text">B-Tree</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Replication"><span class="toc-number">1.2.</span> <span class="toc-text">Replication</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Failure-detection"><span class="toc-number">1.3.</span> <span class="toc-text">Failure detection</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Consistency"><span class="toc-number">1.4.</span> <span class="toc-text">Consistency</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CAP-theorem"><span class="toc-number">1.4.1.</span> <span class="toc-text">CAP theorem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PACELC-theorem"><span class="toc-number">1.4.2.</span> <span class="toc-text">PACELC theorem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Strong-consistency"><span class="toc-number">1.4.3.</span> <span class="toc-text">Strong consistency</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Examples"><span class="toc-number">2.</span> <span class="toc-text">Examples</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Cassandra"><span class="toc-number">2.1.</span> <span class="toc-text">Cassandra</span></a></li></ol></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#High-level-components"><span class="toc-number">1.</span> <span class="toc-text">High level components</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Index"><span class="toc-number">1.1.</span> <span class="toc-text">Index</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hash-index"><span class="toc-number">1.1.1.</span> <span class="toc-text">Hash index</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SSTable-and-LSM-Tree"><span class="toc-number">1.1.2.</span> <span class="toc-text">SSTable and LSM Tree</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#B-Tree"><span class="toc-number">1.1.3.</span> <span class="toc-text">B-Tree</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Replication"><span class="toc-number">1.2.</span> <span class="toc-text">Replication</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Replication-consistency"><span class="toc-number">1.2.1.</span> <span class="toc-text">Replication consistency</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Failure-detection"><span class="toc-number">1.3.</span> <span class="toc-text">Failure detection</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Consistency"><span class="toc-number">1.4.</span> <span class="toc-text">Consistency</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CAP-theorem"><span class="toc-number">1.4.1.</span> <span class="toc-text">CAP theorem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PACELC-theorem"><span class="toc-number">1.4.2.</span> <span class="toc-text">PACELC theorem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Strong-consistency"><span class="toc-number">1.4.3.</span> <span class="toc-text">Strong consistency</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Examples"><span class="toc-number">2.</span> <span class="toc-text">Examples</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Cassandra"><span class="toc-number">2.1.</span> <span class="toc-text">Cassandra</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Time-Series-Databases"><span class="toc-number">2.2.</span> <span class="toc-text">Time Series Databases</span></a></li></ol></li></ol>
 		
 		</div>
 		
@@ -118,6 +118,12 @@
 <p>Segmented Log: as the file grows, it can also become a performance bottleneck, so we can split it into multiple parts. </p>
 <h2 id="Replication"><a href="#Replication" class="headerlink" title="Replication"></a>Replication</h2><p>Replication is the process of having multiple copies of data in order to make sure that if a database goes down the data wouldn’t lost.  </p>
 <p>Types:<br>(1) Single leader replication: all writes go to one instance, reads come from any instance<br>(2) Multi leader replication: writes can go to a small subset of leader instances and reads can come from any instance<br>(3) Leaderless replication: writes go to all instances, reads come from all instances (for example: quorum)</p>
+<h3 id="Replication-consistency"><a href="#Replication-consistency" class="headerlink" title="Replication consistency"></a>Replication consistency</h3><p>Strong Consistency: read sees all previous writes, which means a read operation returns the value that was last written for a given object.</p>
+<p>Eventual Consistency: read sees subset of previous writes, it is the weakest of the guarantees.</p>
+<p>Consistent Prefix: read sees initial sequence of writes, it is guaranteed to observe an ordered sequence of writes starting with<br>the first write to a data object. this is similar to “snapshot isolation” consistency</p>
+<p>Bounded Staleness: read sees all “old” writes, and staleness is defined by a time period T, say 5 minutes.</p>
+<p>Monotonic Reads: read sees increasing subset of writes, it is often called a “session guarantee”.</p>
+<p>Read My Writes: read sees all writes performed by reader.</p>
 <h2 id="Failure-detection"><a href="#Failure-detection" class="headerlink" title="Failure detection"></a>Failure detection</h2><p>Lease: a time-bound leases to grant clients rights on resources.</p>
 <p>Split Brain: we cannot truly know if the leader has stopped for good or has experienced an intermittent failure like a stop-the-world GC pause or a temporary network disruption. if new leader is picked before original leader(zombie leader) has fully died, we have two active leaders.</p>
 <p>Generation Clock: a monotonically increasing number to indicate a server’s generation, which is used to solve split brain.</p>
@@ -154,6 +160,43 @@
 <p>Local cluster keys: denormalize data to keep multiple copies for different cluster key.</p>
 <p>Use case:<br>Write heavy applications and it is self contained, data only needs to be fetched with other data from its partition.<br>Such as: chat messages, user activity tracking, etc.</p>
 <p>Pitfalls:<br>Lack of strong consistency, lack of support of data relationships. lack of global secondary indexes.</p>
+<h2 id="Time-Series-Databases"><a href="#Time-Series-Databases" class="headerlink" title="Time Series Databases"></a>Time Series Databases</h2><p>Access patterns - Write</p>
+<ul>
+<li>write-once, read many times</li>
+<li>write to recent time interval, adjacent values are likely similar</li>
+<li>write generally goes to the same timestamp&#x2F;source</li>
+<li>data inserts corresponding to a range of time which is likely to be most recent timestamp</li>
+</ul>
+<p>Acess patterns - Read</p>
+<ul>
+<li>read statistic data, which makes a column oriented database more suitable, which allows fast aggregations and column based compression to reduce space</li>
+<li>generally we only need one or two columns at a time for graphing</li>
+</ul>
+<p>Acess patterns - Delete</p>
+<ul>
+<li>delete time data older than some date prior to the present</li>
+<li>likely be able to do bulk delete based on timespan.</li>
+</ul>
+<p>Index design: </p>
+<ul>
+<li>(1) a compound index with a timestamp + data source ID combination</li>
+<li>(2) better to treat time interval and source combination into smaller chunk table (as opposed to big table)</li>
+</ul>
+<p>which has benefits of:<br>From: a compound index with a timestamp + data source ID combination</p>
+<ul>
+<li>it allows writes from the same data source over similar intervals of time to be on the same node</li>
+<li>generally speaking all timestamps should be sequential and similar and should be able to be compressed</li>
+</ul>
+<p>From better to treat time interval and source combination into smaller chunk table (as opposed to big table) </p>
+<ul>
+<li>have all column values in one file reduces disk I&#x2F;O and allows faster aggregations of column data.</li>
+<li>improve performance by caching their index in memory, otherwise we would have many more relevant index pages that would occasionally have to be swapped in and out of memory which incurs significant processing overhead</li>
+<li>greatly optimize on the performance of deletes</li>
+<li>for LSM tree, we can just delete the corresponding chunk tables&#x2F;index, as opposed to writing all of deletes to index files and waiting for compaction</li>
+<li>for B-trees, we can just delete the appropriate index as opposed to going through the B-tree many times and setting loads of pointers to null</li>
+</ul>
+<p>Use case: logs, sensors, metrics etc.</p>
+<p>Examples: InfluxDB, TimescaleDB, etc.</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -211,7 +254,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#High-level-components"><span class="toc-number">1.</span> <span class="toc-text">High level components</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Index"><span class="toc-number">1.1.</span> <span class="toc-text">Index</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hash-index"><span class="toc-number">1.1.1.</span> <span class="toc-text">Hash index</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SSTable-and-LSM-Tree"><span class="toc-number">1.1.2.</span> <span class="toc-text">SSTable and LSM Tree</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#B-Tree"><span class="toc-number">1.1.3.</span> <span class="toc-text">B-Tree</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Replication"><span class="toc-number">1.2.</span> <span class="toc-text">Replication</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Failure-detection"><span class="toc-number">1.3.</span> <span class="toc-text">Failure detection</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Consistency"><span class="toc-number">1.4.</span> <span class="toc-text">Consistency</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CAP-theorem"><span class="toc-number">1.4.1.</span> <span class="toc-text">CAP theorem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PACELC-theorem"><span class="toc-number">1.4.2.</span> <span class="toc-text">PACELC theorem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Strong-consistency"><span class="toc-number">1.4.3.</span> <span class="toc-text">Strong consistency</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Examples"><span class="toc-number">2.</span> <span class="toc-text">Examples</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Cassandra"><span class="toc-number">2.1.</span> <span class="toc-text">Cassandra</span></a></li></ol></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#High-level-components"><span class="toc-number">1.</span> <span class="toc-text">High level components</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Index"><span class="toc-number">1.1.</span> <span class="toc-text">Index</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hash-index"><span class="toc-number">1.1.1.</span> <span class="toc-text">Hash index</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SSTable-and-LSM-Tree"><span class="toc-number">1.1.2.</span> <span class="toc-text">SSTable and LSM Tree</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#B-Tree"><span class="toc-number">1.1.3.</span> <span class="toc-text">B-Tree</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Replication"><span class="toc-number">1.2.</span> <span class="toc-text">Replication</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Replication-consistency"><span class="toc-number">1.2.1.</span> <span class="toc-text">Replication consistency</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Failure-detection"><span class="toc-number">1.3.</span> <span class="toc-text">Failure detection</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Consistency"><span class="toc-number">1.4.</span> <span class="toc-text">Consistency</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CAP-theorem"><span class="toc-number">1.4.1.</span> <span class="toc-text">CAP theorem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PACELC-theorem"><span class="toc-number">1.4.2.</span> <span class="toc-text">PACELC theorem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Strong-consistency"><span class="toc-number">1.4.3.</span> <span class="toc-text">Strong consistency</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Examples"><span class="toc-number">2.</span> <span class="toc-text">Examples</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Cassandra"><span class="toc-number">2.1.</span> <span class="toc-text">Cassandra</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Time-Series-Databases"><span class="toc-number">2.2.</span> <span class="toc-text">Time Series Databases</span></a></li></ol></li></ol>
  
   </div>
 
