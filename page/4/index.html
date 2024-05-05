@@ -79,6 +79,68 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2012/06/14/MySQL连接实例/" title="MySQL连接实例" itemprop="url">MySQL连接实例</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tingting Tao" target="_blank" itemprop="author">Tingting Tao</a>
+		
+  <p class="article-time">
+    <time datetime="2012-06-15T02:07:00.000Z" itemprop="datePublished"> Published 2012-06-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>各种有趣的MySQL连接实例，直接上代码。</p>
+<p>关于MySQL join的说明可参考：<a href="/2011/12/13/MySQL%E7%9A%84Join%E4%BD%BF%E7%94%A8/">MySQL的Join使用</a></p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2012/06/14/MySQL%E8%BF%9E%E6%8E%A5%E5%AE%9E%E4%BE%8B/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/MySQL/">MySQL</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2012/06/14/各种二分查找/" title="各种二分查找" itemprop="url">各种二分查找</a>
   </h1>
   <p class="article-author">By
@@ -653,72 +715,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2011/12/23/使用位运算实现乘法和乘方运算/" title="使用位运算实现乘法和乘方运算" itemprop="url">使用位运算实现乘法和乘方运算</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Tingting Tao" target="_blank" itemprop="author">Tingting Tao</a>
-		
-  <p class="article-time">
-    <time datetime="2011-12-23T19:08:00.000Z" itemprop="datePublished"> Published 2011-12-23</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>1、使用位运算乘法。</p>
-<p>把一个乘数变为2进制后，使用位运算完成乘数的乘法。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment"> * 输入：正整数k 和 正整数m </span></span><br><span class="line"><span class="comment"> * 输出：k*m </span></span><br><span class="line"><span class="comment"> */</span>   </span><br><span class="line">__int64 <span class="title function_">km</span><span class="params">(__int64 k, __int64 m)</span>&#123;  </span><br><span class="line">   __int64 x = k;  </span><br><span class="line">   <span class="type">int</span> w = (<span class="type">int</span>)<span class="built_in">floor</span>(<span class="built_in">log</span>(m) / <span class="built_in">log</span>(<span class="number">2</span>)) <span class="number">-1</span>;  </span><br><span class="line">   __int64 e = <span class="number">1</span> &lt;&lt; w;  </span><br><span class="line">   <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;=w; i++)&#123;  </span><br><span class="line">       x &lt;&lt;= <span class="number">1</span>;  </span><br><span class="line">       <span class="keyword">if</span>(m &amp; e)  </span><br><span class="line">            x += k;  </span><br><span class="line">       e &gt;&gt;= <span class="number">1</span>;  </span><br><span class="line">   &#125;  </span><br><span class="line">   <span class="keyword">return</span> x;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
-
-<p>2、使用位运算的乘方运算</p>
-<p>指数变为2进制后，使用位运算完成乘方运算。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2011/12/23/%E4%BD%BF%E7%94%A8%E4%BD%8D%E8%BF%90%E7%AE%97%E5%AE%9E%E7%8E%B0%E4%B9%98%E6%B3%95%E5%92%8C%E4%B9%98%E6%96%B9%E8%BF%90%E7%AE%97/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/Algorithm/">Algorithm</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/3/">Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">Next</a>
@@ -742,7 +738,7 @@
 		  
 		
 		  
-			<li><a href="/categories/IT-Technology/" title="IT Technology">IT Technology<sup>44</sup></a></li>
+			<li><a href="/categories/IT-Technology/" title="IT Technology">IT Technology<sup>45</sup></a></li>
 		  
 		
 		</ul>
@@ -767,11 +763,11 @@
 			
 		
 			
-				<li><a href="/tags/Cheatsheet/" title="Cheatsheet">Cheatsheet<sup>3</sup></a></li>
+				<li><a href="/tags/Database/" title="Database">Database<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Database/" title="Database">Database<sup>3</sup></a></li>
+				<li><a href="/tags/Cheatsheet/" title="Cheatsheet">Cheatsheet<sup>3</sup></a></li>
 			
 		
 			
@@ -779,7 +775,7 @@
 			
 		
 			
-				<li><a href="/tags/C/" title="C">C<sup>2</sup></a></li>
+				<li><a href="/tags/Java/" title="Java">Java<sup>3</sup></a></li>
 			
 		
 			
@@ -791,11 +787,7 @@
 			
 		
 			
-				<li><a href="/tags/Java/" title="Java">Java<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Adobe-Illustrator/" title="Adobe Illustrator">Adobe Illustrator<sup>1</sup></a></li>
+				<li><a href="/tags/C/" title="C">C<sup>2</sup></a></li>
 			
 		
 			
@@ -803,15 +795,23 @@
 			
 		
 			
-				<li><a href="/tags/Bash/" title="Bash">Bash<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/AB-Testing/" title="AB Testing">AB Testing<sup>1</sup></a></li>
 			
 		
 			
+				<li><a href="/tags/Adobe-Illustrator/" title="Adobe Illustrator">Adobe Illustrator<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Bash/" title="Bash">Bash<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/Performance/" title="Performance">Performance<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
 			
 		
 			
@@ -828,10 +828,6 @@
 		
 			
 				<li><a href="/tags/Spider/" title="Spider">Spider<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/ServerSideEncryption/" title="ServerSideEncryption">ServerSideEncryption<sup>1</sup></a></li>
 			
 		
 		</ul>
