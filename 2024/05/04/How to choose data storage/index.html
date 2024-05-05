@@ -1,0 +1,636 @@
+
+ <!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>How to choose data storage (Study notes) | Tingting Tao&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tingting Tao">
+    
+
+    
+    <meta name="description" content="There are lots of different options for databases. How can we decide which one to choose? There are couple aspects to consider.  (1) consistency level: ACID or BASE (2) index: B-tree or LSM-tree (3) r">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to choose data storage (Study notes)">
+<meta property="og:url" content="http://taylortao.github.io/2024/05/04/How%20to%20choose%20data%20storage/index.html">
+<meta property="og:site_name" content="Tingting Tao&#39;s Blog">
+<meta property="og:description" content="There are lots of different options for databases. How can we decide which one to choose? There are couple aspects to consider.  (1) consistency level: ACID or BASE (2) index: B-tree or LSM-tree (3) r">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-05-04T18:17:49.000Z">
+<meta property="article:modified_time" content="2024-05-05T02:20:51.550Z">
+<meta property="article:author" content="Tingting Tao">
+<meta property="article:tag" content="SystemDesign">
+<meta property="article:tag" content="Database">
+<meta property="article:tag" content="Storage">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Tingting Tao&#39;s Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Tingting Tao&#39;s Blog">Tingting Tao&#39;s Blog</a></h1>
+				<h2 class="blog-motto">Welcome to Tingting&#39;s Blog</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:taylortao.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2024/05/04/How to choose data storage/" title="How to choose data storage (Study notes)" itemprop="url">How to choose data storage (Study notes)</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tingting Tao" target="_blank" itemprop="author">Tingting Tao</a>
+		
+  <p class="article-time">
+    <time datetime="2024-05-04T18:17:49.000Z" itemprop="datePublished"> Published 2024-05-04</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Database-Consistency-Models-ACID-vs-BASE"><span class="toc-number">1.</span> <span class="toc-text">Database Consistency Models: ACID vs BASE</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ACID"><span class="toc-number">1.1.</span> <span class="toc-text">ACID</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Atomicity"><span class="toc-number">1.1.1.</span> <span class="toc-text">Atomicity</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Consistency"><span class="toc-number">1.1.2.</span> <span class="toc-text">Consistency</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Isolation"><span class="toc-number">1.1.3.</span> <span class="toc-text">Isolation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Durability"><span class="toc-number">1.1.4.</span> <span class="toc-text">Durability</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ways-to-implement-Serializable-Isolation"><span class="toc-number">1.1.5.</span> <span class="toc-text">Ways to implement Serializable Isolation</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Actual-Serial-Execution"><span class="toc-number">1.1.5.1.</span> <span class="toc-text">Actual Serial Execution</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Two-Phase-Locking-pessimistic"><span class="toc-number">1.1.5.2.</span> <span class="toc-text">Two Phase Locking - pessimistic</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Serializable-Snapshot-Isolation-optimistic"><span class="toc-number">1.1.5.3.</span> <span class="toc-text">Serializable Snapshot Isolation - optimistic</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Weaker-isolation"><span class="toc-number">1.1.6.</span> <span class="toc-text">Weaker isolation</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Concurrency-bug-Dirty-Reads"><span class="toc-number">1.1.6.1.</span> <span class="toc-text">Concurrency bug - Dirty Reads</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Concurrency-bug-Dirty-Writes"><span class="toc-number">1.1.6.2.</span> <span class="toc-text">Concurrency bug - Dirty Writes</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Solution-Read-committed"><span class="toc-number">1.1.6.3.</span> <span class="toc-text">Solution - Read committed</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Concurrency-bug-Read-skew-Non-repeatable-reads"><span class="toc-number">1.1.6.4.</span> <span class="toc-text">Concurrency bug - Read skew (Non-repeatable reads)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Concurrency-bug-Lost-Updates"><span class="toc-number">1.1.6.5.</span> <span class="toc-text">Concurrency bug - Lost Updates</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Solution-Snapshot-Isolation"><span class="toc-number">1.1.6.6.</span> <span class="toc-text">Solution - Snapshot Isolation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Concurrency-bug-Write-Skew"><span class="toc-number">1.1.6.7.</span> <span class="toc-text">Concurrency bug - Write Skew</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Concurrency-bug-Phantoms"><span class="toc-number">1.1.6.8.</span> <span class="toc-text">Concurrency bug - Phantoms</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Solution-Predicate-Lock-and-Materializing-Conflict"><span class="toc-number">1.1.6.9.</span> <span class="toc-text">Solution - Predicate Lock and Materializing Conflict</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BASE"><span class="toc-number">1.2.</span> <span class="toc-text">BASE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Summary"><span class="toc-number">1.3.</span> <span class="toc-text">Summary</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Database-index"><span class="toc-number">2.</span> <span class="toc-text">Database index</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Replication"><span class="toc-number">3.</span> <span class="toc-text">Replication</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Database-types-and-key-features"><span class="toc-number">4.</span> <span class="toc-text">Database types and key features</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Relational-database"><span class="toc-number">4.1.</span> <span class="toc-text">Relational database</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Document-data-model-NoSQL"><span class="toc-number">4.2.</span> <span class="toc-text">Document data model (NoSQL)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Key-value-database-NoSQL"><span class="toc-number">4.3.</span> <span class="toc-text">Key value database (NoSQL)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Wide-Column-database-NoSQL"><span class="toc-number">4.4.</span> <span class="toc-text">Wide-Column database (NoSQL)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Graph-database"><span class="toc-number">4.5.</span> <span class="toc-text">Graph database</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Text-search-database"><span class="toc-number">4.6.</span> <span class="toc-text">Text search database</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#In-memory-database-Cache"><span class="toc-number">4.7.</span> <span class="toc-text">In-memory database (Cache)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Time-series-database"><span class="toc-number">4.8.</span> <span class="toc-text">Time series database</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#New-SQL"><span class="toc-number">4.9.</span> <span class="toc-text">New SQL</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<p>There are lots of different options for databases. How can we decide which one to choose? There are couple aspects to consider.</p>
+<ul>
+<li>(1) consistency level: ACID or BASE</li>
+<li>(2) index: B-tree or LSM-tree</li>
+<li>(3) replication</li>
+</ul>
+<span id="more"></span>
+
+<h1 id="Database-Consistency-Models-ACID-vs-BASE"><a href="#Database-Consistency-Models-ACID-vs-BASE" class="headerlink" title="Database Consistency Models: ACID vs BASE"></a>Database Consistency Models: ACID vs BASE</h1><h2 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h2><p>ACID - most relational database supports it<br>Transaction - an abstraction that provide ACID guarantees </p>
+<h3 id="Atomicity"><a href="#Atomicity" class="headerlink" title="Atomicity"></a>Atomicity</h3><p>each write in the transaction will either be committed or aborted entirely</p>
+<h3 id="Consistency"><a href="#Consistency" class="headerlink" title="Consistency"></a>Consistency</h3><p>a transaction brings the database from one valid state to another valid state.</p>
+<h3 id="Isolation"><a href="#Isolation" class="headerlink" title="Isolation"></a>Isolation</h3><p>concurrent transactions do not interfere with each other(serializability), each transaction can pretend it is the only one running on the database which has performance penalty</p>
+<h3 id="Durability"><a href="#Durability" class="headerlink" title="Durability"></a>Durability</h3><p>Once a transaction is committed, it remains so, data will be on disk.</p>
+<h3 id="Ways-to-implement-Serializable-Isolation"><a href="#Ways-to-implement-Serializable-Isolation" class="headerlink" title="Ways to implement Serializable Isolation"></a>Ways to implement Serializable Isolation</h3><h4 id="Actual-Serial-Execution"><a href="#Actual-Serial-Execution" class="headerlink" title="Actual Serial Execution"></a>Actual Serial Execution</h4><p>Use a single thread for all database queries with limitation of a single CPU core and all data needs to be on single partition.</p>
+<h4 id="Two-Phase-Locking-pessimistic"><a href="#Two-Phase-Locking-pessimistic" class="headerlink" title="Two Phase Locking - pessimistic"></a>Two Phase Locking - pessimistic</h4><p>Each object has a lock, either shared mode or exclusive mode.</p>
+<ul>
+<li>Shared lock(read lock): multiple transactions can concurrently read from a row.</li>
+<li>Exclusive lock(write lock): no other transactions are currently holding a shared or exclusive lock.</li>
+</ul>
+<p>we also needs predicate lock for rows that does not exist. predicate lock performs poorly due to going through a bunch of rows. </p>
+<p>Two phase locking performance is bad due to deadlocks. database must detect when transactions are having a deadlock, and abort one of them, let the other finish, and then retry the aborted one.</p>
+<p>A dead lock scenario. both transactions try to update single row, T1 grab read lock, T2 grab read lock, now both transactions could not acquire write lock, which forms a deadlock.</p>
+<h4 id="Serializable-Snapshot-Isolation-optimistic"><a href="#Serializable-Snapshot-Isolation-optimistic" class="headerlink" title="Serializable Snapshot Isolation - optimistic"></a>Serializable Snapshot Isolation - optimistic</h4><p>Transactions run concurrently based on snapshot of the database and revert a transaction if a concurrency issue detected.<br>Keep track of which transactions have read an item, if another transaction writes to the item, abort all of the transactions that read it.</p>
+<h3 id="Weaker-isolation"><a href="#Weaker-isolation" class="headerlink" title="Weaker isolation"></a>Weaker isolation</h3><p>Serializable Isolation comes at a very high performance cost, and many databases have chosen to implement weaker forms of isolation.</p>
+<h4 id="Concurrency-bug-Dirty-Reads"><a href="#Concurrency-bug-Dirty-Reads" class="headerlink" title="Concurrency bug - Dirty Reads"></a>Concurrency bug - Dirty Reads</h4><p>Clients reads uncommitted data which might gets rolled back later on.<br>Solution: Database remembers old value of a write until write request is committed, no lock needed.</p>
+<h4 id="Concurrency-bug-Dirty-Writes"><a href="#Concurrency-bug-Dirty-Writes" class="headerlink" title="Concurrency bug - Dirty Writes"></a>Concurrency bug - Dirty Writes</h4><p>When writing data, we can only overwrite committed data.<br>Solution: Have a lock on the object, transaction must grab the lock first.</p>
+<h4 id="Solution-Read-committed"><a href="#Solution-Read-committed" class="headerlink" title="Solution - Read committed"></a>Solution - Read committed</h4><p>Read committed isolation prevents dirty reads and dirty writes. (weakest isolation).</p>
+<h4 id="Concurrency-bug-Read-skew-Non-repeatable-reads"><a href="#Concurrency-bug-Read-skew-Non-repeatable-reads" class="headerlink" title="Concurrency bug - Read skew (Non-repeatable reads)"></a>Concurrency bug - Read skew (Non-repeatable reads)</h4><p>When making multiple reads within a transaction, while throughout the course of those reads, database changes and client sees the database in an inconsistent state.</p>
+<p>This is problematic for things like analytics queries, as the data will make no sense if some pieces of it are more or less updated than others.</p>
+<p>Solution: Snapshot Isolation</p>
+<ul>
+<li>(1) Every transaction is assigned an increasing transaction ID</li>
+<li>(2) When writing a value, the transaction ID is also saved</li>
+<li>(3) When a transaction performs a read, it takes the value with the highest transaction ID that is less than the reader ID.</li>
+</ul>
+<p>For example: if reader’s transaction id is 13, then all updates&#x2F;writes after transaction id 13 won’t be seen.</p>
+<h4 id="Concurrency-bug-Lost-Updates"><a href="#Concurrency-bug-Lost-Updates" class="headerlink" title="Concurrency bug - Lost Updates"></a>Concurrency bug - Lost Updates</h4><p>When two threads read an object, perform an operation on it, and then write it back, one of the threads’ update may be lost.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">T1 and T2:</span><br><span class="line">read balance = 100</span><br><span class="line"></span><br><span class="line">T1 and T2: </span><br><span class="line">update balance&#x27; = balance + 100</span><br><span class="line"></span><br><span class="line">then after them:</span><br><span class="line">balance = 200. (we lost 100)</span><br></pre></td></tr></table></figure>
+
+<p>Solution:<br>(1) use exclusive locks to do atomic write.<br>(2) locks in application code, bug prone.<br>(3) snapshot isolation, the 2nd transaction could see the value that it was about to write has since changed, it will rollback and retry (Recommended)</p>
+<p>These techniques do not work in multileader&#x2F;leaderless replication, as they assume one copy of the data, instead better to store conflicts as siblings and use custom resolution logic to solve.</p>
+<h4 id="Solution-Snapshot-Isolation"><a href="#Solution-Snapshot-Isolation" class="headerlink" title="Solution - Snapshot Isolation"></a>Solution - Snapshot Isolation</h4><p>Prevents read skew (non-repeatable read), detect lost updates</p>
+<h4 id="Concurrency-bug-Write-Skew"><a href="#Concurrency-bug-Write-Skew" class="headerlink" title="Concurrency bug - Write Skew"></a>Concurrency bug - Write Skew</h4><p>Two transactions each read the same set of objects in order to make a decision on whether to make a write, and then the write itself will break the invariant.</p>
+<p>For example: a table has three seat.<br>both T1 and T2 will select people on table, it returns P1 and P2.<br>then both T1 and T2 inserted a different people, P3 and P4 which break the invariant that at maximum 3 people are allowed.</p>
+<p>Solution: lock on all the rows that you read to form the predicate, and then only one transaction can read them at a time.</p>
+<h4 id="Concurrency-bug-Phantoms"><a href="#Concurrency-bug-Phantoms" class="headerlink" title="Concurrency bug - Phantoms"></a>Concurrency bug - Phantoms</h4><p>What if those rows don’t all yet exist? for example this table could only one people. then invariants are broken when both transactions create a new row, and there is nothing to put a lock on!</p>
+<p>Solution: materializing conflicts: create a blank row prematurely, so that transactions can apply a lock to it.</p>
+<h4 id="Solution-Predicate-Lock-and-Materializing-Conflict"><a href="#Solution-Predicate-Lock-and-Materializing-Conflict" class="headerlink" title="Solution - Predicate Lock and Materializing Conflict"></a>Solution - Predicate Lock and Materializing Conflict</h4><p>used to prevent write skew and phantoms</p>
+<h2 id="BASE"><a href="#BASE" class="headerlink" title="BASE"></a>BASE</h2><p>BasicallyAvailable: system is available most of the time.<br>Soft State: state of the system may change over time, data consistency is developer’s problem and would not be handled by database.<br>Eventually Consistent: the system’s updated state is gradually replicated across all nodes.</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>ACID: transactions must be reliable and consistent. correctness is of more importance than speed.<br>BASE: high availability and scalability are necessary, and some degree of data inconsistency is acceptable.</p>
+<p>ACID use cases: banking applications, financial systems, job scheduling</p>
+<h1 id="Database-index"><a href="#Database-index" class="headerlink" title="Database index"></a>Database index</h1><p>Index is used for the purpose of speeding up reads.</p>
+<p>(1) LSM Trees + SSTables<br>Writes first go to a balanced binary search tree in memory<br>Tree flushed to a sorted table on disk when it gets too big<br>Can binary search SSTables for the value of a key<br>If there are too many SSTables they can be merged together (old values of keys will be discarded) </p>
+<p>Pro: Fast writes to memory and WAL<br>Con: Might have to search many SSTables for value of key, thus slow read</p>
+<p>(2) B-Trees<br>A binary tree using pointers on disk<br>Writes iterate through the binary tree and either overwrite the existing key value or create a new page on disk and modify the parent pointer to the new page</p>
+<h1 id="Replication"><a href="#Replication" class="headerlink" title="Replication"></a>Replication</h1><p>Replication is the process of having multiple copies of data in order to be more reliable.</p>
+<p>(1) Single leader replication: all writes go to one database, reads come from any database<br>(2) Multi leader replication: writes can go to a small subset of leader databases reads can come from any database<br>(3) Leaderless replication: writes go to all databases, reads come from all databases</p>
+<p>Single leader replication pro:<br>it is easy to ensure that there are no data conflicts due to all writes will go to one node</p>
+<p>Leaderless and multileader replication pro:<br>supports higher write throughput beyond just one database node (at the cost of potential write conflicts)</p>
+<h1 id="Database-types-and-key-features"><a href="#Database-types-and-key-features" class="headerlink" title="Database types and key features"></a>Database types and key features</h1><h2 id="Relational-database"><a href="#Relational-database" class="headerlink" title="Relational database"></a>Relational database</h2><p>Relational database: mysql, oracle, sql server, postgres</p>
+<p>Key features:<br>(1) Fixed schema, columns must be decided and chosen and it can be altered later, but it involves modifying the whole database and potentially going offline.<br>(2) Relational&#x2F;Normalized data - changes to one table may require changes to others, for example: adding an author and their books to different tables on different nodes, this will require two phase commit, which is expensive and with performance penalty<br>(3) Could guarantee ACID, which makes query excessively slow if you don’t need them due to two phase locking etc.<br>(4) typically use B-trees as indexes</p>
+<p>Reasons to use SQL database:<br>(1) when correctness is of more importance than speed and scalability<br>for example: e-commerce, bank and financial applications</p>
+<p>Reasons to not use SQL database:<br>(1) Vertical scaling by upgrading to better hardware is pricy.<br>(2) Horizontal scaling by dding more nodes is hard. why hard?<br>The way to support horizontal scaling is to shard&#x2F;partition data, and it is hard.<br>For example transfer money between two customers, and they are on different partitions, we need distributed transactions which is hard to implement and also two phases locking over network would be very slow.</p>
+<h2 id="Document-data-model-NoSQL"><a href="#Document-data-model-NoSQL" class="headerlink" title="Document data model (NoSQL)"></a>Document data model (NoSQL)</h2><p>Document database: mongodb, riak, couchbase, rethinkdb</p>
+<p>Key features:<br>(1) data is written in large nested documents and data is denormalized<br>(2) each document can have an entirely different structure.<br>(2) data has better data locality </p>
+<h2 id="Key-value-database-NoSQL"><a href="#Key-value-database-NoSQL" class="headerlink" title="Key value database (NoSQL)"></a>Key value database (NoSQL)</h2><p>Key-Value Stores: Data is stored in an array of key-value pairs, include Redis, Voldemort, DynamoDb and LevelDb.</p>
+<h2 id="Wide-Column-database-NoSQL"><a href="#Wide-Column-database-NoSQL" class="headerlink" title="Wide-Column database (NoSQL)"></a>Wide-Column database (NoSQL)</h2><p>Wide colume database supports things like nested-key&#x2F;value, it includes Apache Cassandra, hbase, etc.<br>It normally has a shard key and a sort key and allows for flexible schemas.<br>Great for applications with high write volume, consistency is not as important, all writes and reads go to the same shard (no transactions supported)</p>
+<p>Apache Cassandra &#x2F; Riak<br>Multileader&#x2F;Leaderless replication (configurable)<br>Index: LSM tree and SSTables (Super fast writes)<br>Conflict resolution: </p>
+<ul>
+<li>Apache Cassandra: last write win.</li>
+<li>Riak: supports CRDTs (conflict free replicated data types), it allows for implementing counters and sets in a conflict free way, custom code to handle conflicts<br>Use case: chat application etc.</li>
+</ul>
+<p>Apache HBase:<br>Single leader replication<br>Index: LSM tree and SSTables (Fast writes)<br>Column oriented storage: column compression and increased data locality within columns of data<br>Use case: multiple thumbnails of a youtube video, sensor readings etc</p>
+<h2 id="Graph-database"><a href="#Graph-database" class="headerlink" title="Graph database"></a>Graph database</h2><p>Graph Databases are used to store data whose relations are best represented in a graph, which has nodes (entities), properties (information about the entities), and edges (connections between the entities).<br>Examples: Neo4j, Titan and InfiniteGraph</p>
+<p>Key Features:<br>Data is represented as nodes and edges, which has pointers from one address on disk to another for quicker lookups<br>Comparing with using other db index, it needs O(log n) to binary search, but using direct pointers is O(1)</p>
+<p>Use cases:<br>For data naturally represented in graph formats, for example: map data, friends on social media</p>
+<h2 id="Text-search-database"><a href="#Text-search-database" class="headerlink" title="Text search database"></a>Text search database</h2><p>Optimized for storing and searching against text, includes: elasticsearch, solr, lucene. their index is based on inverted Index.</p>
+<h2 id="In-memory-database-Cache"><a href="#In-memory-database-Cache" class="headerlink" title="In-memory database (Cache)"></a>In-memory database (Cache)</h2><p>Key value stores implemented in memory and it uses a hashmap under the hood.<br>Which includes: Memcached and Redis, Redis has richer feature set.</p>
+<p>Useful for data that needs to be written and retrieved extremely quickly, memory is expensive so good for small datasets<br>For example caches, geo spatial index.</p>
+<h2 id="Time-series-database"><a href="#Time-series-database" class="headerlink" title="Time series database"></a>Time series database</h2><p>Use LSM trees for fast ingestion, but break table into many small indexes by both ingestion source and timestamp<br>By putting the whole index in cache for better performance<br>Quick deletion of whole index when no longer relevant (as opposed to typical tombstone)<br>Timestamps should be sequential and similar and should be able to be compressed<br>Column based, having all column values in one file reduces disk I&#x2F;O and allows faster aggregations of column data, generally we only need one or two columns at a time for graphing</p>
+<p>It includes: TimeScaleDB, Apache Druid<br>It could be used for: sensor data, metrics, etc.</p>
+<h2 id="New-SQL"><a href="#New-SQL" class="headerlink" title="New SQL"></a>New SQL</h2><p>Still has SQL syntax but to improve more on scalability.</p>
+<p>VoltDb:<br>SQL but completely in memory, single threaded execution for no locking, it is expensive and only allows for small datasets</p>
+<p>Spanner:<br>SQL, uses GPS clocks in data center to avoid locking by using timestamps to determine order of writes which is very expensive</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/SystemDesign/">SystemDesign</a><a href="/tags/Database/">Database</a><a href="/tags/Storage/">Storage</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://taylortao.github.io/2024/05/04/How%20to%20choose%20data%20storage/" data-title="How to choose data storage (Study notes) | Tingting Tao&#39;s Blog" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2024/04/26/Key value storage overview/"  title="Distributed key value storage overview (Study notes)">
+ <strong>Next: </strong><br/> 
+ <span>Distributed key value storage overview (Study notes)
+</span>
+</a>
+</div>
+
+</nav>
+
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Database-Consistency-Models-ACID-vs-BASE"><span class="toc-number">1.</span> <span class="toc-text">Database Consistency Models: ACID vs BASE</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ACID"><span class="toc-number">1.1.</span> <span class="toc-text">ACID</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Atomicity"><span class="toc-number">1.1.1.</span> <span class="toc-text">Atomicity</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Consistency"><span class="toc-number">1.1.2.</span> <span class="toc-text">Consistency</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Isolation"><span class="toc-number">1.1.3.</span> <span class="toc-text">Isolation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Durability"><span class="toc-number">1.1.4.</span> <span class="toc-text">Durability</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ways-to-implement-Serializable-Isolation"><span class="toc-number">1.1.5.</span> <span class="toc-text">Ways to implement Serializable Isolation</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Actual-Serial-Execution"><span class="toc-number">1.1.5.1.</span> <span class="toc-text">Actual Serial Execution</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Two-Phase-Locking-pessimistic"><span class="toc-number">1.1.5.2.</span> <span class="toc-text">Two Phase Locking - pessimistic</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Serializable-Snapshot-Isolation-optimistic"><span class="toc-number">1.1.5.3.</span> <span class="toc-text">Serializable Snapshot Isolation - optimistic</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Weaker-isolation"><span class="toc-number">1.1.6.</span> <span class="toc-text">Weaker isolation</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Concurrency-bug-Dirty-Reads"><span class="toc-number">1.1.6.1.</span> <span class="toc-text">Concurrency bug - Dirty Reads</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Concurrency-bug-Dirty-Writes"><span class="toc-number">1.1.6.2.</span> <span class="toc-text">Concurrency bug - Dirty Writes</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Solution-Read-committed"><span class="toc-number">1.1.6.3.</span> <span class="toc-text">Solution - Read committed</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Concurrency-bug-Read-skew-Non-repeatable-reads"><span class="toc-number">1.1.6.4.</span> <span class="toc-text">Concurrency bug - Read skew (Non-repeatable reads)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Concurrency-bug-Lost-Updates"><span class="toc-number">1.1.6.5.</span> <span class="toc-text">Concurrency bug - Lost Updates</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Solution-Snapshot-Isolation"><span class="toc-number">1.1.6.6.</span> <span class="toc-text">Solution - Snapshot Isolation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Concurrency-bug-Write-Skew"><span class="toc-number">1.1.6.7.</span> <span class="toc-text">Concurrency bug - Write Skew</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Concurrency-bug-Phantoms"><span class="toc-number">1.1.6.8.</span> <span class="toc-text">Concurrency bug - Phantoms</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Solution-Predicate-Lock-and-Materializing-Conflict"><span class="toc-number">1.1.6.9.</span> <span class="toc-text">Solution - Predicate Lock and Materializing Conflict</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BASE"><span class="toc-number">1.2.</span> <span class="toc-text">BASE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Summary"><span class="toc-number">1.3.</span> <span class="toc-text">Summary</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Database-index"><span class="toc-number">2.</span> <span class="toc-text">Database index</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Replication"><span class="toc-number">3.</span> <span class="toc-text">Replication</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Database-types-and-key-features"><span class="toc-number">4.</span> <span class="toc-text">Database types and key features</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Relational-database"><span class="toc-number">4.1.</span> <span class="toc-text">Relational database</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Document-data-model-NoSQL"><span class="toc-number">4.2.</span> <span class="toc-text">Document data model (NoSQL)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Key-value-database-NoSQL"><span class="toc-number">4.3.</span> <span class="toc-text">Key value database (NoSQL)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Wide-Column-database-NoSQL"><span class="toc-number">4.4.</span> <span class="toc-text">Wide-Column database (NoSQL)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Graph-database"><span class="toc-number">4.5.</span> <span class="toc-text">Graph database</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Text-search-database"><span class="toc-number">4.6.</span> <span class="toc-text">Text search database</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#In-memory-database-Cache"><span class="toc-number">4.7.</span> <span class="toc-text">In-memory database (Cache)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Time-series-database"><span class="toc-number">4.8.</span> <span class="toc-text">Time series database</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#New-SQL"><span class="toc-number">4.9.</span> <span class="toc-text">New SQL</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Book-notes/" title="Book notes">Book notes<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT-Technology/" title="IT Technology">IT Technology<sup>44</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SystemDesign/" title="SystemDesign">SystemDesign<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Cheatsheet/" title="Cheatsheet">Cheatsheet<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Storage/" title="Storage">Storage<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C">C<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Measurement/" title="Measurement">Measurement<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Sampling/" title="Sampling">Sampling<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Adobe-Illustrator/" title="Adobe Illustrator">Adobe Illustrator<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GIT/" title="GIT">GIT<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Bash/" title="Bash">Bash<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AB-Testing/" title="AB Testing">AB Testing<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Performance/" title="Performance">Performance<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Chinese-encoding/" title="Chinese encoding">Chinese encoding<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/RateLimiting/" title="RateLimiting">RateLimiting<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Spider/" title="Spider">Spider<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ServerSideEncryption/" title="ServerSideEncryption">ServerSideEncryption<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/taylor_tao" target="_blank" title="My old blog">My old blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> Hello, I&#39;m Tingting Tao. <br/>
+			Welcome to my blog!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/taylortao" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		<a href="https://www.facebook.com/tao.tingting" target="_blank" class="icon-facebook" title="facebook"></a>
+		
+		
+		
+		
+		
+		
+		<a href="mailto:taylortao.tingting@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2024 
+		
+		<a href="/about" target="_blank" title="Tingting Tao">Tingting Tao</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
