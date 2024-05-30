@@ -1,0 +1,634 @@
+
+ <!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>System Design-Instagram/Twitter/Reddit | Tingting Tao&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tingting Tao">
+    
+
+    
+    <meta name="description" content="Requirement Load who I am following, and who follows me Load all post from a single user Low latency news feeds New post is visible to public or close friends   Nested comments  Read &gt;&gt; Write">
+<meta property="og:type" content="article">
+<meta property="og:title" content="System Design-Instagram&#x2F;Twitter&#x2F;Reddit">
+<meta property="og:url" content="http://taylortao.github.io/2024/05/09/SystemDesign-Instagram-Twitter-Reddit/index.html">
+<meta property="og:site_name" content="Tingting Tao&#39;s Blog">
+<meta property="og:description" content="Requirement Load who I am following, and who follows me Load all post from a single user Low latency news feeds New post is visible to public or close friends   Nested comments  Read &gt;&gt; Write">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-05-09T17:10:18.000Z">
+<meta property="article:modified_time" content="2024-05-09T21:35:46.073Z">
+<meta property="article:author" content="Tingting Tao">
+<meta property="article:tag" content="SystemDesign">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Tingting Tao&#39;s Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Tingting Tao&#39;s Blog">Tingting Tao&#39;s Blog</a></h1>
+				<h2 class="blog-motto">Welcome to Tingting&#39;s Blog</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:taylortao.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2024/05/09/SystemDesign-Instagram-Twitter-Reddit/" title="System Design-Instagram/Twitter/Reddit" itemprop="url">System Design-Instagram/Twitter/Reddit</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tingting Tao" target="_blank" itemprop="author">Tingting Tao</a>
+		
+  <p class="article-time">
+    <time datetime="2024-05-09T17:10:18.000Z" itemprop="datePublished"> Published 2024-05-09</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Requirement"><span class="toc-number">1.</span> <span class="toc-text">Requirement</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Capacity"><span class="toc-number">2.</span> <span class="toc-text">Capacity</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Load-estimation"><span class="toc-number">2.1.</span> <span class="toc-text">Load estimation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Storage-estimation"><span class="toc-number">2.2.</span> <span class="toc-text">Storage estimation</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#System-interface"><span class="toc-number">3.</span> <span class="toc-text">System interface</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Data-model"><span class="toc-number">3.0.1.</span> <span class="toc-text">Data model</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#High-level-design-x2F-Detailed-design"><span class="toc-number">4.</span> <span class="toc-text">High-level design &#x2F; Detailed design</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Follower-x2F-Following"><span class="toc-number">4.1.</span> <span class="toc-text">Follower&#x2F;Following</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Load-x2F-Post-news-feed"><span class="toc-number">4.2.</span> <span class="toc-text">Load&#x2F;Post news feed</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Popular-users"><span class="toc-number">4.2.1.</span> <span class="toc-text">Popular users</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Load-news-feeds"><span class="toc-number">4.2.2.</span> <span class="toc-text">Load news feeds</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nest-comments"><span class="toc-number">4.3.</span> <span class="toc-text">Nest comments</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Top-comments-Derived-data-view"><span class="toc-number">4.3.1.</span> <span class="toc-text">Top comments (Derived data view)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Synchronous-update-VS-Derived-data"><span class="toc-number">4.3.2.</span> <span class="toc-text">Synchronous update VS Derived data</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+		<h1 id="Requirement"><a href="#Requirement" class="headerlink" title="Requirement"></a>Requirement</h1><ul>
+<li>Load who I am following, and who follows me</li>
+<li>Load all post from a single user</li>
+<li>Low latency news feeds</li>
+<li>New post is visible to public or close friends  </li>
+<li>Nested comments</li>
+</ul>
+<p>Read &gt;&gt; Write</p>
+<span id="more"></span>
+
+<h1 id="Capacity"><a href="#Capacity" class="headerlink" title="Capacity"></a>Capacity</h1><h2 id="Load-estimation"><a href="#Load-estimation" class="headerlink" title="Load estimation"></a>Load estimation</h2><p>1 million daily active users (for cache size)<br>and cache 100 new feeds makes it 100 x 1 million &#x3D; 100MB which could be easily fit on a single host.</p>
+<h2 id="Storage-estimation"><a href="#Storage-estimation" class="headerlink" title="Storage estimation"></a>Storage estimation</h2><p>one post &#x3D; 100 charaters<br>100 bytes test + 100 bytes metadata<br>1 billion posts per day &#x3D; 1 billion x 200 bytes x 365 &#x3D; 73TB per year<br>avg(# of followers) &#x3D; 100 with celebrity has millions<br>comments &#x3D; 100 bytes test + 100 bytes metadata<br>comments per post &#x3D; 1 million x 200 bytes &#x3D; 200MB</p>
+<h1 id="System-interface"><a href="#System-interface" class="headerlink" title="System interface"></a>System interface</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Query user info:</span><br><span class="line">getUser(userId)</span><br><span class="line"></span><br><span class="line">Query following relationship:</span><br><span class="line">getFollowers(userId)</span><br><span class="line">getFollowing(userId)</span><br><span class="line"></span><br><span class="line">Posts:</span><br><span class="line">sendPost(userId)</span><br><span class="line"></span><br><span class="line">Load news feeds:</span><br><span class="line">getNewsFeeds(userId)</span><br><span class="line"></span><br><span class="line">Comments:</span><br><span class="line">postComment(postId, comment)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Data-model"><a href="#Data-model" class="headerlink" title="Data model"></a>Data model</h3><p>These tables are source of truth tables, higher data durability will be needed:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">User table:</span><br><span class="line">userId, some other user&#x27;s metadata</span><br><span class="line"></span><br><span class="line">UserFollower table:</span><br><span class="line">userId, followerUserId, Security permission(public/close friend)</span><br><span class="line"></span><br><span class="line">Posts table:</span><br><span class="line">userId, Post</span><br><span class="line"></span><br><span class="line">Comment table:</span><br><span class="line">comment id, parent comment id, other comment properties</span><br></pre></td></tr></table></figure>
+
+<h1 id="High-level-design-x2F-Detailed-design"><a href="#High-level-design-x2F-Detailed-design" class="headerlink" title="High-level design &#x2F; Detailed design"></a>High-level design &#x2F; Detailed design</h1><h2 id="Follower-x2F-Following"><a href="#Follower-x2F-Following" class="headerlink" title="Follower&#x2F;Following"></a>Follower&#x2F;Following</h2><p>In order to support data locality search all followers and followings, we will be needing two tables:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">UserFollower table: (who follows me, source of truth table)</span><br><span class="line">userId, followerUserId</span><br><span class="line"></span><br><span class="line">UserFollowing table: (who I am following, derived data, could be a in-memory Redis if data size is small)</span><br><span class="line">userId, Follower</span><br></pre></td></tr></table></figure>
+
+<p>To maintain the consistency:<br>(1) Two phase commit will be very slow and not good fault tolerence since it needs both table available.<br>(2) Change data capture (CDC): the process of identifying and capturing changes made to data in a database and then delivering those changes in real-time to a downstream process or system.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UserFollower Table -&gt; Kafka (distributed log) -&gt; Flink (processer) -&gt; derived data in UserFollowing.</span><br></pre></td></tr></table></figure>
+
+<p>For UserFollower:</p>
+<ul>
+<li>UserFollower is the source of truth.</li>
+<li>UserFollower take all writes on critical path (need to be fast: LSM-tree based)</li>
+<li>Write conflict is not an issue, for example, user 1 got follower A and B, requests hit different host, then at the end of the day we could merge (user1, A) and (user2, B) together into (user1, {A, B})</li>
+<li>Kafka could be partitioned based on user id.</li>
+</ul>
+<h2 id="Load-x2F-Post-news-feed"><a href="#Load-x2F-Post-news-feed" class="headerlink" title="Load&#x2F;Post news feed"></a>Load&#x2F;Post news feed</h2><p>The most native way is for read request: query UserFollowing cache first and then query Posts table one by one.</p>
+<p>This is not ideal since the read latency will be very slow, in expedite the read requests, we want to have news feeds aggregated for all active users.<br>This means for each new post, we need to publish the same post to all their followers, assume average followers count is 100, then each post will make 100 copies.</p>
+<p>Storage size for it:<br>Assume we have 1 billion &#x2F; day x 200 bytes x 100(followers) &#x3D; 20TB of storage per day.</p>
+<p>And to make load news feed fast, if we put them all in memory:<br>20TB&#x2F;256GB &#x3D; 80 hosts (in-memory nodes) </p>
+<p>From Posts table to the aggregated feeds cache will be through an offline pipeline: (Push model in the eye of news feed reader)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Client -&gt; Posts DB -&gt; Stream -&gt; Flink(Processor) -&gt; Aggregated feed cache</span><br></pre></td></tr></table></figure>
+
+<p>Processor:</p>
+<ul>
+<li>Keep a local copy of all followers for a given poster, avoid making constant call to db.</li>
+<li>Partitioned by user id to have high concurrency and no write conflicts.</li>
+<li>Posting pipeline honors security level: whether they are close friends or not</li>
+</ul>
+<p>There is a trade-off here: change security level would not impact historical posts and propagating permission change is not synchronous.</p>
+<p>Posts DB:</p>
+<ul>
+<li>Write needs to be fast. </li>
+<li>Partition by userid, Sort key is timestamp. so that query by user id ordered by timestamp will be fast (load recent posts from user X)</li>
+<li>Cassendra could be a good choice.</li>
+</ul>
+<h3 id="Popular-users"><a href="#Popular-users" class="headerlink" title="Popular users"></a>Popular users</h3><p>Assuming in the system we have less than 10K popular users, by nature they have millions of followers.<br>And the above Posting workflow will be very slow when they publish a new post.<br>In this case, actually we will know if this post will be a popular posts based on the follower count. </p>
+<p>So in this case, we will have another popular posts workflow: (Pull mode in the eye of news feed reader)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Popular User client -&gt; Posts DB -&gt; Stream -&gt; Flink -&gt; Popular posts cache</span><br><span class="line"></span><br><span class="line">Popular posts cache:</span><br><span class="line">user id, post</span><br></pre></td></tr></table></figure>
+
+<h3 id="Load-news-feeds"><a href="#Load-news-feeds" class="headerlink" title="Load news feeds"></a>Load news feeds</h3><p>News feeds service will be like: </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Reader client X -&gt; News Feed Service -&gt; (Popular user ids X is following) -&gt; (popular posts cache) </span><br><span class="line">                                     -&gt; (News feed cache for user )</span><br><span class="line">                                     -&gt; Aggregate above results then sort and return</span><br></pre></td></tr></table></figure>
+
+<h2 id="Nest-comments"><a href="#Nest-comments" class="headerlink" title="Nest comments"></a>Nest comments</h2><p>Tree structure comments, let’s assume comments size will be 200MB per post. (1 million x 200 characters&#x2F;comment)</p>
+<p>The main theme for comments are:</p>
+<ul>
+<li>Casually dependencies on comments. </li>
+<li>Read &gt;&gt; Write</li>
+<li>Single leader replication for a single post: considering a case that if a client read comment “1” and publish a reply “11”, then “11” makes no sense if “1” is not there. therefore, for each post, we would prefer a single leader replication.</li>
+</ul>
+<p>And data structure to represent a tree would be: </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Comments table: (Sourse of Truth data)</span><br><span class="line">Id, ParentId, comment</span><br></pre></td></tr></table></figure>
+
+<p>Two ways to implement:<br>(1) Native graph database, it has pointers on disk from node to node, which makes it faster than non native graph database.<br>However jumping from disk to disk is not that fast due to lack of data locality. data could be on different partitions.</p>
+<p>(2) Use general relational database<br>To speed up the search, we could generate a DFS index like (similar thoughts from GeoHash):</p>
+<p>Comments tree:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">A</span><br><span class="line">|----------|</span><br><span class="line">AA         AB</span><br><span class="line">|----|     |</span><br><span class="line">AAA AAB    ABA</span><br></pre></td></tr></table></figure>
+
+<p>The comments are natually co-locate by the prefix and could be loaded in order with good data locality:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">A</span><br><span class="line">AA</span><br><span class="line">AAA</span><br><span class="line">AAB</span><br><span class="line">AB</span><br><span class="line">ABA</span><br></pre></td></tr></table></figure>
+
+<p>In terms of prefix, if we use <code>&#123;0-9a-z&#125;&#123;4,4&#125;</code> which makes <code>34^4=1.7millions</code> children per level.<br>The con of this approach is BFS(or other generalized queries) are not efficient. cause it is purely optimized for DFS search.</p>
+<h3 id="Top-comments-Derived-data-view"><a href="#Top-comments-Derived-data-view" class="headerlink" title="Top comments (Derived data view)"></a>Top comments (Derived data view)</h3><p>The real world example is to sort by hottest or most controversial(which has lots of up and down votes) comments.</p>
+<p>Two ways to implement this are:<br>(1) Denormalized graph based secondary index on disk</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Comment-1</span><br><span class="line">| (12) ----|(6)</span><br><span class="line">2          3</span><br><span class="line">| (5)</span><br><span class="line">4</span><br></pre></td></tr></table></figure>
+
+<p>If another 3 people upvotes comment 3, it will add 6 and 3 make it a 9 upvotes.<br>It will maintain a sorted list of edges on write path. read will grab edges accordingly.</p>
+<p>(2) Normalized graph based secondary index in memory (could be Redis)<br>Instead of holding the entire comments, will only store comment ids in the in-memory trees.<br>We could have a HashMap with key as comment id and value as edge.</p>
+<h3 id="Synchronous-update-VS-Derived-data"><a href="#Synchronous-update-VS-Derived-data" class="headerlink" title="Synchronous update VS Derived data"></a>Synchronous update VS Derived data</h3><p>For the secondary index update, we probably would not want to do it synchronously due to it might require two phase commits.<br>And those data does not need to be perfectly consistent, all they need is eventually consistent or casually consistent.<br>So Derived data is better. now let’s discuss casually consistent first:<br>(1) Partitioned by post id, all these comments&#x2F;upvotes&#x2F;downvotes will go to the same kafka shard.<br>Upvotes and downvots could have a high tps and overwhelm kafka partition.<br>(2) Wait for comments to propagation to all replicas and then we could shard upvotes&#x2F;downvotes based on comment id.<br>(3) Have separate workflows for comments and votes</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Comment DB -&gt; Kafka(shard on postId) -&gt; Flink(Consumer) -&gt; Derived comments.</span><br><span class="line">UpVotes/DownVotes DB -&gt; Kafka(shard on postId+commentId) -&gt; Flink(Consumer) -&gt; Wait until comments is present before exporting votes to it -&gt; Derived comments.</span><br><span class="line"></span><br><span class="line">UpVotes/DownVotes DB</span><br><span class="line">User,PostId,CommentId,Upvote/Downvote</span><br></pre></td></tr></table></figure>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/IT-Technology/">IT Technology</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/SystemDesign/">SystemDesign</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://taylortao.github.io/2024/05/09/SystemDesign-Instagram-Twitter-Reddit/" data-title="System Design-Instagram/Twitter/Reddit | Tingting Tao&#39;s Blog" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2024/05/05/Java concurrency/"  title="Java concurrency (Study notes)">
+ <strong>Next: </strong><br/> 
+ <span>Java concurrency (Study notes)
+</span>
+</a>
+</div>
+
+</nav>
+
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Requirement"><span class="toc-number">1.</span> <span class="toc-text">Requirement</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Capacity"><span class="toc-number">2.</span> <span class="toc-text">Capacity</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Load-estimation"><span class="toc-number">2.1.</span> <span class="toc-text">Load estimation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Storage-estimation"><span class="toc-number">2.2.</span> <span class="toc-text">Storage estimation</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#System-interface"><span class="toc-number">3.</span> <span class="toc-text">System interface</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Data-model"><span class="toc-number">3.0.1.</span> <span class="toc-text">Data model</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#High-level-design-x2F-Detailed-design"><span class="toc-number">4.</span> <span class="toc-text">High-level design &#x2F; Detailed design</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Follower-x2F-Following"><span class="toc-number">4.1.</span> <span class="toc-text">Follower&#x2F;Following</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Load-x2F-Post-news-feed"><span class="toc-number">4.2.</span> <span class="toc-text">Load&#x2F;Post news feed</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Popular-users"><span class="toc-number">4.2.1.</span> <span class="toc-text">Popular users</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Load-news-feeds"><span class="toc-number">4.2.2.</span> <span class="toc-text">Load news feeds</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nest-comments"><span class="toc-number">4.3.</span> <span class="toc-text">Nest comments</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Top-comments-Derived-data-view"><span class="toc-number">4.3.1.</span> <span class="toc-text">Top comments (Derived data view)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Synchronous-update-VS-Derived-data"><span class="toc-number">4.3.2.</span> <span class="toc-text">Synchronous update VS Derived data</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Book-notes/" title="Book notes">Book notes<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/IT-Technology/" title="IT Technology">IT Technology<sup>46</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SystemDesign/" title="SystemDesign">SystemDesign<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Cheatsheet/" title="Cheatsheet">Cheatsheet<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Storage/" title="Storage">Storage<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Measurement/" title="Measurement">Measurement<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Sampling/" title="Sampling">Sampling<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C">C<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GIT/" title="GIT">GIT<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Adobe-Illustrator/" title="Adobe Illustrator">Adobe Illustrator<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AB-Testing/" title="AB Testing">AB Testing<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Bash/" title="Bash">Bash<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Performance/" title="Performance">Performance<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Concurrency/" title="Concurrency">Concurrency<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Chinese-encoding/" title="Chinese encoding">Chinese encoding<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Spider/" title="Spider">Spider<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ServerSideEncryption/" title="ServerSideEncryption">ServerSideEncryption<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/taylor_tao" target="_blank" title="My old blog">My old blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> Hello, I&#39;m Tingting Tao. <br/>
+			Welcome to my blog!</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/taylortao" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		<a href="https://www.facebook.com/tao.tingting" target="_blank" class="icon-facebook" title="facebook"></a>
+		
+		
+		
+		
+		
+		
+		<a href="mailto:taylortao.tingting@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2024 
+		
+		<a href="/about" target="_blank" title="Tingting Tao">Tingting Tao</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
